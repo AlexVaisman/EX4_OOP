@@ -16,7 +16,7 @@ import Robot.Play;
 public class AutoPlay {
 	private Game game;
 	private Play play1;
-    
+
 	public AutoPlay(Game game, Play play1) {
 		this.game = game;
 		this.play1 = play1;
@@ -28,25 +28,20 @@ public class AutoPlay {
 		String line[] = {};
 		line = playerData.split(",");
 
-
 		/*
 		 * If this is the first time the algo is called we need to find where to place
 		 * the player and what corners see.
 		 */
-		if (line[3].contains("Time left:100000.")){
+		if (line[3].contains("Time left:100000.")) {
 			Point3D start = findCluster();
 			play1.setInitLocation(start.x(), start.y());
 			ArrayList<String> board_data = play1.getBoard();
 			game.updateTheGame(board_data);
 			FindWhatCornersCornerSees();
-			FindWhatFruitsCornerSees();
-			
-		}
-		
-		
-		
 
-		
+			FindWhatFruitsCornerSees();
+		}
+
 		FindWhatCornersPlayerSees();
 		FindClosestFood();
 		// CheckIfGhosetInRadius();
@@ -134,13 +129,19 @@ public class AutoPlay {
 			Segment way = new Segment(this.game.getPlayers().get(0).getGps(), fruit.getGps());
 			boolean notBlocked = CheckIfNotBlocked(way);
 			double distance = convert.distance3d(this.game.getPlayers().get(0).getGps(), fruit.getGps());
+
 			if (distance < minVisibleFruit && notBlocked) {
 				minVisibleFruit = distance;
 				fruitmin = fruit;
-			} else if (distance < minNotVisibleFruit && !notBlocked) {
+			} else if (!notBlocked) {
+				// double distancNOTVISIBALE =functin boaz
+				double distanceNotVisibale = 0;
+				if (distanceNotVisibale < minNotVisibleFruit) {
 
-				minNotVisibleFruit = distance;
-				fruitminNotVisibale = fruit;
+					minNotVisibleFruit = distanceNotVisibale;
+					fruitminNotVisibale = fruit;
+				}
+
 			}
 		}
 		double minVisibalePacman = 1000000;
