@@ -21,6 +21,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
+import Algo.AutoPlay;
 import Coords.Convert_pixel_gps;
 import GIS.Box;
 import GIS.Corner;
@@ -160,7 +161,7 @@ public class MyFrame extends JFrame implements MouseListener {
 	}
 
 	private void ChooseButtonStartSim() {
-		// AutoPlay start= new AutoPlay(this.game,this.play1);
+		AutoPlay start= new AutoPlay(this.game,this.play1);
 
 	}
 

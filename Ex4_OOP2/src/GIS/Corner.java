@@ -20,9 +20,7 @@ public class Corner {
 	}
 
 
-	public String toString() {
-		return "Corner [gps=" + gps + ", whatISee=" + whatISee + ", myId=" + myId + "]";
-	}
+
 	/* Getters */
 
 	public Point3D getGps() {

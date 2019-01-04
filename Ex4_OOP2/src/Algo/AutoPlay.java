@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import Coords.MyCoords;
 import GIS.Box;
+import GIS.Corner;
 import GIS.Fruit;
 import GIS.Game;
 import GIS.Pacman;
@@ -35,9 +36,9 @@ public class AutoPlay {
 			Point3D start = findCluster();
 			play1.setInitLocation(start.x(), start.y());
 			ArrayList<String> board_data = play1.getBoard();
-			game.updateTheGame(board_data);
-			
-		}
+			//game.updateTheGame(board_data);
+			FindWhatCornerSees();
+			}
 		
 		
 		FindClosestFood();
@@ -50,6 +51,29 @@ public class AutoPlay {
 	}
 
 
+
+
+	private void FindWhatCornerSees() {
+		Iterator<Corner> cornerIt = this.game.getCorners().iterator();
+		
+		while(cornerIt.hasNext()) {
+			Corner corn = cornerIt.next();
+			Iterator<Corner> cornerIt2 = this.game.getCorners().iterator();
+			while(cornerIt2.hasNext()) {
+				Corner corn2 = cornerIt2.next();
+				
+				if(corn.getGps().x()!=corn2.getGps().x()||corn.getGps().y()!=corn2.getGps().y()) {
+					Segment way = new Segment (corn.getGps(),corn2.getGps());
+					boolean iSee = CheckIfNotBlocked(way);
+					if(iSee==true) {
+						corn.getWhatISee().add(corn2); //<-----------------------------------?
+					}
+					
+				}
+			}
+		}
+		
+	}
 
 
 	private void FindClosestFood() {
@@ -178,7 +202,7 @@ public class AutoPlay {
 	 * @param wall, the blocking line.
 	 * @return true if way not blocked.
 	 */
-	public static boolean isVisibale (Segment way, Segment wall) {
+	private static boolean isVisibale (Segment way, Segment wall) {
 		double x1 = way.getA().y();
 		double x2 = way.getB().y();
 		double y1 = way.getA().x();
@@ -202,7 +226,14 @@ public class AutoPlay {
 		}
 		else {
 			if(y1<= wy1 && wy1 <= y2 || y2<= wy1 && wy1 <= y1) {
-				
+				double dx = x2-x1;
+				double dy = y2-y1;
+				if(Math.abs(dx)<0.00001) {
+					x2 = x2 + 0.00001;
+				}
+				if(Math.abs(dy)<0.00001) {
+					y2= y2 + 0.00001;
+				}
 				double m = (y2-y1) / (x2-x1);
 				double b = y1 - (m*x1);
 				double x = (wy1-b)/m;
@@ -215,26 +246,26 @@ public class AutoPlay {
 		return true;
 	}
 
-	public static void main(String[] args) {  
-		// check vertical
-//		Point3D b9 = new Point3D (32.103352, 35.209148 , 0);
-//	    Point3D b3 = new Point3D (32.103321, 35.207316 , 0);
-//	    Segment way = new Segment(b9,b3);
-//	    Point3D kaikar = new Point3D (32.102485, 35.207727 , 0);
-//	    Point3D kaikarveod100 = new Point3D (32.104685, 35.207727 , 0);
-//	    Segment wall = new Segment(kaikar,kaikarveod100);
-//	    System.out.println(isVisibale(way,wall));
-	    
-		// check horizontal
-//		Point3D b9 = new Point3D (32.102942082587504,35.209646600669004, 0);
-//		Point3D b3 = new Point3D (32.10364611762156,35.210028200780506, 0);
-//		Segment way = new Segment(b9,b3);
+//	public static void main(String[] args) {  
+//		// check vertical
+////		Point3D b9 = new Point3D (32.103352, 35.209148 , 0);
+////	    Point3D b3 = new Point3D (32.103321, 35.207316 , 0);
+////	    Segment way = new Segment(b9,b3);
+////	    Point3D kaikar = new Point3D (32.102485, 35.207727 , 0);
+////	    Point3D kaikarveod100 = new Point3D (32.104685, 35.207727 , 0);
+////	    Segment wall = new Segment(kaikar,kaikarveod100);
+////	    System.out.println(isVisibale(way,wall));
 //	    
-//	    Point3D kaikar = new Point3D (32.103321, 35.203852 , 0);
-//	    Point3D kaikarveod100 = new Point3D (32.103321, 35.204252, 0);
-//	    Segment wall = new Segment(kaikar,kaikarveod100);
-	    
-       
-	}
+//		// check horizontal
+////		Point3D b9 = new Point3D (32.102942082587504,35.209646600669004, 0);
+////		Point3D b3 = new Point3D (32.10364611762156,35.210028200780506, 0);
+////		Segment way = new Segment(b9,b3);
+////	    
+////	    Point3D kaikar = new Point3D (32.103321, 35.203852 , 0);
+////	    Point3D kaikarveod100 = new Point3D (32.103321, 35.204252, 0);
+////	    Segment wall = new Segment(kaikar,kaikarveod100);
+//	    
+//       
+//	}
 }
 
