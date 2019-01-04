@@ -12,6 +12,7 @@ import GIS.Pacman;
 import GIS.Player;
 import Geom.Point3D;
 import Robot.Play;
+import graph.Node;
 
 public class AutoPlay {
 	private Game game;
@@ -135,9 +136,15 @@ public class AutoPlay {
 				fruitmin = fruit;
 			} else if (!notBlocked) {
 				// double distancNOTVISIBALE =functin boaz
+				
+				
+				
 				double distanceNotVisibale = 0;
 				if (distanceNotVisibale < minNotVisibleFruit) {
 
+					Node b = G.getNodeByName(target);
+				b.g
+					
 					minNotVisibleFruit = distanceNotVisibale;
 					fruitminNotVisibale = fruit;
 				}
