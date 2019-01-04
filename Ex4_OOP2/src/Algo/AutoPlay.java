@@ -28,23 +28,31 @@ public class AutoPlay {
 		String playerData = play1.getStatistics();
 		String line[] = {};
 		line = playerData.split(",");
+		System.out.println(play1.getStatistics());
 
 		/*
 		 * If this is the first time the algo is called we need to find where to place
 		 * the player and what corners see.
 		 */
-		if (line[3].contains("Time left:100000.")) {
+		if (line[3].contains("Time left:0.0")) {   //line[3].contains("Time left:100000.
 			Point3D start = findCluster();
 			play1.setInitLocation(start.x(), start.y());
 			ArrayList<String> board_data = play1.getBoard();
 			game.updateTheGame(board_data);
+			System.out.println(this.game.getPlayers().get(0).getGps());
 			FindWhatCornersCornerSees();
-
 			FindWhatFruitsCornerSees();
 		}
-
+		
+		
 		FindWhatCornersPlayerSees();
-		FindClosestFood();
+		
+		BuildGraph g = new BuildGraph(this.game.getPlayers().get(0),this.game.getCorners(),this.game.getFruits().get(0));
+		System.out.println("DE FRUIT: "+this.game.getFruits().get(0).getGps());
+		System.out.println(g.getAns().getDist());
+
+
+		//FindClosestFood();
 		// CheckIfGhosetInRadius();
 
 	}
@@ -136,13 +144,13 @@ public class AutoPlay {
 				fruitmin = fruit;
 			} else if (!notBlocked) {
 				// double distancNOTVISIBALE =functin boaz
-				
-				
-				
+
+
+
 				double distanceNotVisibale = 0;
 				if (distanceNotVisibale < minNotVisibleFruit) {
 
-					
+
 					minNotVisibleFruit = distanceNotVisibale;
 					fruitminNotVisibale = fruit;
 				}
@@ -288,25 +296,25 @@ public class AutoPlay {
 		return true;
 	}
 
-//	public static void main(String[] args) {  
-//		// check vertical
-////		Point3D b9 = new Point3D (32.103352, 35.209148 , 0);
-////	    Point3D b3 = new Point3D (32.103321, 35.207316 , 0);
-////	    Segment way = new Segment(b9,b3);
-////	    Point3D kaikar = new Point3D (32.102485, 35.207727 , 0);
-////	    Point3D kaikarveod100 = new Point3D (32.104685, 35.207727 , 0);
-////	    Segment wall = new Segment(kaikar,kaikarveod100);
-////	    System.out.println(isVisibale(way,wall));
-//	    
-//		// check horizontal
-////		Point3D b9 = new Point3D (32.102942082587504,35.209646600669004, 0);
-////		Point3D b3 = new Point3D (32.10364611762156,35.210028200780506, 0);
-////		Segment way = new Segment(b9,b3);
-////	    
-////	    Point3D kaikar = new Point3D (32.103321, 35.203852 , 0);
-////	    Point3D kaikarveod100 = new Point3D (32.103321, 35.204252, 0);
-////	    Segment wall = new Segment(kaikar,kaikarveod100);
-//	    
-//       
-//	}
+	//	public static void main(String[] args) {  
+	//		// check vertical
+	////		Point3D b9 = new Point3D (32.103352, 35.209148 , 0);
+	////	    Point3D b3 = new Point3D (32.103321, 35.207316 , 0);
+	////	    Segment way = new Segment(b9,b3);
+	////	    Point3D kaikar = new Point3D (32.102485, 35.207727 , 0);
+	////	    Point3D kaikarveod100 = new Point3D (32.104685, 35.207727 , 0);
+	////	    Segment wall = new Segment(kaikar,kaikarveod100);
+	////	    System.out.println(isVisibale(way,wall));
+	//	    
+	//		// check horizontal
+	////		Point3D b9 = new Point3D (32.102942082587504,35.209646600669004, 0);
+	////		Point3D b3 = new Point3D (32.10364611762156,35.210028200780506, 0);
+	////		Segment way = new Segment(b9,b3);
+	////	    
+	////	    Point3D kaikar = new Point3D (32.103321, 35.203852 , 0);
+	////	    Point3D kaikarveod100 = new Point3D (32.103321, 35.204252, 0);
+	////	    Segment wall = new Segment(kaikar,kaikarveod100);
+	//	    
+	//       
+	//	}
 }

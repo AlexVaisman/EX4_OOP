@@ -162,6 +162,7 @@ public class MyFrame extends JFrame implements MouseListener {
 
 	private void ChooseButtonStartSim() {
 		AutoPlay start= new AutoPlay(this.game,this.play1);
+		repaint();
 
 	}
 
