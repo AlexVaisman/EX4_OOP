@@ -68,4 +68,8 @@ public class Player {
 		return speed;
 	}
 
+	public void setOrientation(double orientation) {
+		this.orientation = orientation;
+	}
+
 }

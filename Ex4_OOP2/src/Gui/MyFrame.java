@@ -1,7 +1,6 @@
 package Gui;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Menu;
 import java.awt.MenuBar;
@@ -13,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -20,8 +20,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
-import Algo.AutoPlay;
-import Algo.Segment;
 import Coords.Convert_pixel_gps;
 import GIS.Box;
 import GIS.Fruit;
@@ -48,12 +46,13 @@ public class MyFrame extends JFrame implements MouseListener {
 	private boolean isGameLoaded;
 	private boolean isPlayer;
 	private Play play1;
+	private double orientation;
 
 	public MyFrame() {
 
 		/* INIT myImge filed */
 		try {
-			this.myImage = ImageIO.read(new File("C:\\Users\\A Beast\\Desktop\\Ex4_OOP\\data\\Ariel1.png"));
+			this.myImage = ImageIO.read(new File("images\\Ariel1.png"));
 		} catch (IOException e) {
 			System.err.println("ERROR: incorrect path for picture!");
 			e.printStackTrace();
@@ -74,12 +73,10 @@ public class MyFrame extends JFrame implements MouseListener {
 		MenuBar menuBar = new MenuBar();
 		Menu fileMenu = new Menu("File");
 		MenuItem loadFile = new MenuItem("Load");
-		MenuItem saveFile = new MenuItem("Save to CSV");
 		MenuItem clearFile = new MenuItem("Clear");
 		MenuItem exitFile = new MenuItem("Exit");
 
 		fileMenu.add(loadFile);
-		fileMenu.add(saveFile);
 		fileMenu.add(clearFile);
 		fileMenu.add(exitFile);
 
@@ -118,25 +115,11 @@ public class MyFrame extends JFrame implements MouseListener {
 			}
 		});
 
-		/*
-		 * Add action to save File button
-		 * https://stackoverflow.com/questions/15703214/save-file-open-file-dialog-box-
-		 * using-swing-netbeans-gui-editor
-		 */
-		saveFile.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
-				// ChooseButtonSaveFile(arg0);
-			}
-		});
-
 		/* Add action to clear File button */
 		clearFile.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				Game game = getGame();
-				game.getFruits().clear();
-				game.getPacmans().clear();
+				game.clearGame();
 				repaint();
 			}
 		});
@@ -164,7 +147,7 @@ public class MyFrame extends JFrame implements MouseListener {
 				ChooseButtonStartPlay();
 			}
 		});
-		
+
 		/* Add action to startSim play auto button */
 		startSim.addActionListener(new ActionListener() {
 
@@ -176,10 +159,10 @@ public class MyFrame extends JFrame implements MouseListener {
 	}
 
 	private void ChooseButtonStartSim() {
-		 //AutoPlay start= new	AutoPlay(this.game,this.play1);
-		
+		// AutoPlay start= new AutoPlay(this.game,this.play1);
+
 	}
-	
+
 	/**
 	 * This function loads a csv file and creates a new game.
 	 */
@@ -202,11 +185,9 @@ public class MyFrame extends JFrame implements MouseListener {
 				String map_data = play1.getBoundingBox();
 				ArrayList<String> board_data = play1.getBoard();
 				this.game = new Game(board_data, map_data);
-			   
-				play1.setInitLocation(32.1040, 35.2061);
-				play1.start();
-			
-				//System.out.println(play1.getStatistics());
+
+				
+
 				isGameLoaded = true;
 				repaint();
 			}
@@ -215,20 +196,20 @@ public class MyFrame extends JFrame implements MouseListener {
 	}
 
 	private void ChooseButtonStartPlay() {
-
+		play1.start();
+		repaint();
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-			
-				while (play1.isRuning()) {
-				
 
+				while (play1.isRuning()) {
+					play1.rotate(game.getPlayers().get(0).getOrientation());
 					ArrayList<String> board_data = play1.getBoard();
 					game.updateTheGame(board_data);
-					//System.out.println(play1.getStatistics());
-					//repaint();
+					
+					repaint();
 					try {
-						Thread.sleep(100);
+						Thread.sleep(50);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -239,38 +220,13 @@ public class MyFrame extends JFrame implements MouseListener {
 		t1.start();
 	}
 
-//	/**
-//	 * This function saves a game into a csv file.
-//	 * @param e , the ActionEven that calls this function.
-//	 */
-//	private void ChooseButtonSaveFile(ActionEvent e) {
-//
-//		/* Open save file chooser */
-//		JFileChooser chooser = new JFileChooser();
-//		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//		int result = chooser.showSaveDialog(this);
-//
-//		/* If the file path selected. */
-//		if (result == chooser.APPROVE_OPTION) {
-//			File f = chooser.getSelectedFile();
-//			String filePath = f.getAbsolutePath();
-//			/* Check if the file name end with ".csv" */
-//			if (!filePath.endsWith(".csv")) {
-//				f = new File(filePath + ".csv");
-//				Game2CSV creatGameCSV = new Game2CSV(this.game, f);
-//			} else {
-//				Game2CSV creatGameCSV = new Game2CSV(this.game, f);
-//			}
-//		}
-//	}
-
 	/**
 	 * This function will pain the fruits and pacmans on the map. Depending on if
 	 * the gui running a simulation or not.
 	 */
 	public void paint(Graphics g) {
 		
-		g.drawImage(this.myImage, 0, 50 , this.getWidth()-7,this.getHeight()-58, this);
+		g.drawImage(this.myImage, 0, 50, this.getWidth() - 7, this.getHeight() - 58, this);
 		
 		if (isGameLoaded) {
 			this.game.getMap().setHeight(this.getHeight());
@@ -287,7 +243,7 @@ public class MyFrame extends JFrame implements MouseListener {
 				int x = pixel.getX() - (r / 2);
 				int y = pixel.getY() - (r / 2);
 				g.setColor(pac.getColor());
-				g.fillOval(x, y , r, r);
+				g.fillOval(x, y, r, r);
 
 			}
 
@@ -301,7 +257,7 @@ public class MyFrame extends JFrame implements MouseListener {
 				int x = pixel.getX() - (r / 2);
 				int y = pixel.getY() - (r / 2);
 				g.setColor(fruit.getColor());
-				g.fillOval(x, y , r, r);
+				g.fillOval(x, y, r, r);
 			}
 
 			/* Draw ghosts */
@@ -311,10 +267,10 @@ public class MyFrame extends JFrame implements MouseListener {
 				Pixel pixel = new Pixel(0, 0);
 				pixel = convert.convertGPStoPixel(ghost.getGps());
 				int r = ghost.getPicSize();
-				int x = pixel.getX() - (r/2);
-				int y = pixel.getY() - (r/2);
+				int x = pixel.getX() - (r / 2);
+				int y = pixel.getY() - (r / 2);
 				g.setColor(ghost.getColor());
-				g.fillOval(x, y , r, r);
+				g.fillOval(x, y, r, r);
 			}
 
 			/* Draw boxes */
@@ -345,9 +301,9 @@ public class MyFrame extends JFrame implements MouseListener {
 					pixel = convert.convertGPStoPixel(player.getGps());
 					int r = player.getPicSize();
 					int x = pixel.getX() - (r / 2);
-					int y = pixel.getY()- (r / 2);
+					int y = pixel.getY() - (r / 2);
 					g.setColor(player.getColor());
-					g.fillOval(x, y , r, r);
+					g.fillOval(x, y, r, r);
 				}
 			}
 		}
@@ -355,28 +311,32 @@ public class MyFrame extends JFrame implements MouseListener {
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		/*
-		 * if (isPlayer) { int x = e.getX(); int y = e.getY(); Pixel pixel = new
-		 * Pixel(x, y); Convert_pixel_gps convert = new
-		 * Convert_pixel_gps(this.game.getMap()); Point3D gps = new
-		 * Point3D(convert.convertPixeltoGPS(pixel));
-		 * this.play1.setInitLocation(gps.x(), gps.y());
-		 * 
-		 * isPlayer = false; } repaint();
-		 */
-		
-		if(!game.getPlayers().isEmpty()) {
+
+		if (isPlayer && isGameLoaded) {
 			int x = e.getX();
 			int y = e.getY();
-			Pixel pixDirection = new Pixel(x,y);
+			Pixel pixel = new Pixel(x, y);
+			Convert_pixel_gps convert = new Convert_pixel_gps(this.game.getMap());
+			Point3D gps = new Point3D(convert.convertPixeltoGPS(pixel));
+			this.play1.setInitLocation(gps.x(), gps.y());
+			ArrayList<String> board_data = play1.getBoard();
+			game.updateTheGame(board_data);
+			repaint();
+			isPlayer = false;
+			
+		}
+		
+
+		if (!game.getPlayers().isEmpty()) {
+			int x = e.getX();
+			int y = e.getY();
+			Pixel pixDirection = new Pixel(x, y);
 			Convert_pixel_gps convert = new Convert_pixel_gps(this.game.getMap());
 			Point3D gpsDirection = new Point3D(convert.convertPixeltoGPS(pixDirection));
 			game.getPlayers().get(0).findOrientation(gpsDirection);
-			play1.rotate(game.getPlayers().get(0).getOrientation());
+			//play1.rotate(game.getPlayers().get(0).getOrientation());
 			System.out.println(play1.getStatistics());
 			repaint();
-	
-			
 		}
 	}
 

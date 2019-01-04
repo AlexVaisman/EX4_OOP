@@ -31,7 +31,7 @@ public class Map {
 	public Map(String bounds) {
 		/* INIT myImge filed */
 		try {
-			this.myImage = ImageIO.read(new File("C:\\Users\\A Beast\\Desktop\\Ex4_OOP\\data\\Ariel1.png"));
+			this.myImage = ImageIO.read(new File("images\\Ariel1.png"));
 		} catch (IOException e) {
 			System.err.println("ERROR: incorrect path for picture!");
 			e.printStackTrace();

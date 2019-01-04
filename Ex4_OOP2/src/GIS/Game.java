@@ -128,11 +128,8 @@ public class Game {
 	}
 
 	public void updateTheGame(ArrayList<String> board_data) {
-		this.fruits.clear();
-		this.pacmans.clear();
-		this.ghosts.clear();
-		this.boxes.clear();
-		this.players.clear();
+		double ori = players.get(0).getOrientation();
+		clearGame();
 
 		String line[] = {};
 
@@ -147,6 +144,7 @@ public class Game {
 
 				try {
 					Player player = new Player(line);
+					player.setOrientation(ori);
 					players.add(player);
 
 				} catch (ParseException e) {
@@ -218,6 +216,14 @@ public class Game {
 
 		}
 
+	}
+	
+	public void clearGame() {
+		this.fruits.clear();
+		this.pacmans.clear();
+		this.ghosts.clear();
+		this.boxes.clear();
+		this.players.clear();
 	}
 
 	/* Getters */
