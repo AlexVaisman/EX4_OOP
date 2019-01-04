@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 
 import Coords.Convert_pixel_gps;
 import GIS.Box;
+import GIS.Corner;
 import GIS.Fruit;
 import GIS.Game;
 import GIS.Ghost;
@@ -307,6 +308,20 @@ public class MyFrame extends JFrame implements MouseListener {
 					g1.fillOval(x, y, r, r);
 				}
 			}
+			
+			/*Draw corners */
+			Iterator<Corner> cornerIt = this.game.getCorners().iterator();
+			while (cornerIt.hasNext()) {
+				Corner corner = cornerIt.next();
+					Pixel pixel = new Pixel(0, 0);
+					pixel = convert.convertGPStoPixel(corner.getGps());
+					int r = 10;
+					int x = pixel.getX() - (r / 2);
+					int y = pixel.getY() - (r / 2);
+					g1.setColor(Color.RED);
+					g1.fillOval(x, y, r, r);
+			}
+			
 		}
 		g.drawImage(image, 0, 0, this);
 	}

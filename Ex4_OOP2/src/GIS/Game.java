@@ -295,4 +295,8 @@ public class Game {
 		return players;
 	}
 
+	public ArrayList<Corner> getCorners() {
+		return corners;
+	}
+
 }
