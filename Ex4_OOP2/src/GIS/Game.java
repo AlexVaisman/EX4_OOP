@@ -163,7 +163,11 @@ public class Game {
 
 	public void updateTheGame(ArrayList<String> board_data) {
 		double ori = players.get(0).getOrientation();
-		clearGame();
+		this.fruits.clear();
+		this.pacmans.clear();
+		this.ghosts.clear();
+		this.players.clear();
+		this.boxes.clear();
 
 		String line[] = {};
 
@@ -256,9 +260,9 @@ public class Game {
 		this.fruits.clear();
 		this.pacmans.clear();
 		this.ghosts.clear();
-		this.boxes.clear();
 		this.players.clear();
 		this.corners.clear();
+		this.boxes.clear();
 	}
 
 	/* Getters */

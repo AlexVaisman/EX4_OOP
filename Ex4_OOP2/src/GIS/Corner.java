@@ -10,6 +10,7 @@ public class Corner {
 
 	private Point3D gps;
 	private ArrayList<Corner> whatISee;
+	private ArrayList<Fruit> whatFruitIsee;
 	private static int NextId = 0;
 	private final int myId;
 
@@ -17,6 +18,7 @@ public class Corner {
 		this.gps = corner;
 		this.myId = NextId++;
 		this.whatISee = new ArrayList<Corner>();
+		this.whatFruitIsee = new ArrayList<Fruit>();
 	}
 
 
@@ -33,6 +35,10 @@ public class Corner {
 
 	public int getMyId() {
 		return myId;
+	}
+
+	public ArrayList<Fruit> getWhatFruitIsee() {
+		return whatFruitIsee;
 	}
 
 

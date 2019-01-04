@@ -9,126 +9,164 @@ import GIS.Corner;
 import GIS.Fruit;
 import GIS.Game;
 import GIS.Pacman;
+import GIS.Player;
 import Geom.Point3D;
 import Robot.Play;
 
 public class AutoPlay {
 	private Game game;
 	private Play play1;
-
-
-	public AutoPlay(Game game,Play play1) {
+    
+	public AutoPlay(Game game, Play play1) {
 		this.game = game;
 		this.play1 = play1;
 		startAlgo();
 	}
-
 
 	private void startAlgo() {
 		String playerData = play1.getStatistics();
 		String line[] = {};
 		line = playerData.split(",");
 
-		/* If this is the first time the algo is called
-		 * we need to find where to place the player .
+
+		/*
+		 * If this is the first time the algo is called we need to find where to place
+		 * the player and what corners see.
 		 */
-		if(line[3].contains("Time left:100000."));{
+		if (line[3].contains("Time left:100000.")){
 			Point3D start = findCluster();
 			play1.setInitLocation(start.x(), start.y());
 			ArrayList<String> board_data = play1.getBoard();
-			//game.updateTheGame(board_data);
-			FindWhatCornerSees();
-			}
+			game.updateTheGame(board_data);
+			FindWhatCornersCornerSees();
+			FindWhatFruitsCornerSees();
+			
+		}
 		
 		
+		
+
+		
+		FindWhatCornersPlayerSees();
 		FindClosestFood();
-		//CheckIfGhosetInRadius();
-	   
-		
-		
-		
-		
+		// CheckIfGhosetInRadius();
+
 	}
 
-
-
-
-	private void FindWhatCornerSees() {
+	private void FindWhatFruitsCornerSees() {
 		Iterator<Corner> cornerIt = this.game.getCorners().iterator();
-		
-		while(cornerIt.hasNext()) {
+
+		while (cornerIt.hasNext()) {
+			Corner corn = cornerIt.next();
+			Iterator<Fruit> fruitIt = this.game.getFruits().iterator();
+			while (fruitIt.hasNext()) {
+				Fruit fruit = fruitIt.next();
+
+				Segment way = new Segment(corn.getGps(), fruit.getGps());
+				boolean iSee = CheckIfNotBlocked(way);
+				if (iSee == true) {
+					corn.getWhatFruitIsee().add(fruit);
+				}
+
+			}
+		}
+	}
+
+	/**
+	 * This function finds what corners on the map the player sees.
+	 */
+	private void FindWhatCornersPlayerSees() {
+		Player player = this.game.getPlayers().get(0);
+		Iterator<Corner> cornerIt = this.game.getCorners().iterator();
+
+		while (cornerIt.hasNext()) {
+			Corner corn = cornerIt.next();
+			Segment way = new Segment(player.getGps(), corn.getGps());
+			boolean iSee = CheckIfNotBlocked(way);
+			if (iSee == true) {
+				this.game.getPlayers().get(0).getWhatISee().add(corn);
+			}
+		}
+	}
+
+	/**
+	 * This function finds for each corner , what corners this corner sees.
+	 */
+	private void FindWhatCornersCornerSees() {
+		Iterator<Corner> cornerIt = this.game.getCorners().iterator();
+
+		while (cornerIt.hasNext()) {
 			Corner corn = cornerIt.next();
 			Iterator<Corner> cornerIt2 = this.game.getCorners().iterator();
-			while(cornerIt2.hasNext()) {
+			while (cornerIt2.hasNext()) {
 				Corner corn2 = cornerIt2.next();
-				
-				if(corn.getGps().x()!=corn2.getGps().x()||corn.getGps().y()!=corn2.getGps().y()) {
-					Segment way = new Segment (corn.getGps(),corn2.getGps());
+
+				if (corn.getGps().x() != corn2.getGps().x() || corn.getGps().y() != corn2.getGps().y()) {
+					Segment way = new Segment(corn.getGps(), corn2.getGps());
 					boolean iSee = CheckIfNotBlocked(way);
-					if(iSee==true) {
-						corn.getWhatISee().add(corn2); //<-----------------------------------?
+					if (iSee == true) {
+						corn.getWhatISee().add(corn2); // <-----------------------------------?
 					}
-					
+
 				}
 			}
 		}
-		
+
 	}
 
-
+	/**
+	 * This function finds the closest pacman or fruit to the player, regardless to
+	 * if its visible or not. it will find the distance of not visible fruits or
+	 * pacmans as a path.
+	 * 
+	 */
 	private void FindClosestFood() {
 		Iterator<Fruit> fruitIt = this.game.getFruits().iterator();
 		double minVisibleFruit = 1000000;
 		double minNotVisibleFruit = 1000000;
 		MyCoords convert = new MyCoords();
-		Fruit fruitmin = new Fruit(0,0,0);
-		Fruit fruitminNotVisibale = new Fruit(0,0,0);
-		
+		Fruit fruitmin = new Fruit(0, 0, 0);
+		Fruit fruitminNotVisibale = new Fruit(0, 0, 0);
+
 		/* finds the nearest fruit that is visible */
-		while(fruitIt.hasNext()) {
+		while (fruitIt.hasNext()) {
 			Fruit fruit = fruitIt.next();
-			Segment way = new Segment(this.game.getPlayers().get(0).getGps(),fruit.getGps());
+			Segment way = new Segment(this.game.getPlayers().get(0).getGps(), fruit.getGps());
 			boolean notBlocked = CheckIfNotBlocked(way);
 			double distance = convert.distance3d(this.game.getPlayers().get(0).getGps(), fruit.getGps());
-			if(distance<minVisibleFruit && notBlocked) {
+			if (distance < minVisibleFruit && notBlocked) {
 				minVisibleFruit = distance;
 				fruitmin = fruit;
-			}
-			else if(distance<minNotVisibleFruit && !notBlocked) {
-				
+			} else if (distance < minNotVisibleFruit && !notBlocked) {
+
 				minNotVisibleFruit = distance;
 				fruitminNotVisibale = fruit;
 			}
 		}
 		double minVisibalePacman = 1000000;
 		Iterator<Pacman> pacIt = game.getPacmans().iterator();
-		Pacman pacMin = new Pacman(0,0,0);
+		Pacman pacMin = new Pacman(0, 0, 0);
 		/* finds the nearest pacman that is visible */
-		while(pacIt.hasNext()) {
+		while (pacIt.hasNext()) {
 			Pacman pac = pacIt.next();
-			Segment way = new Segment(this.game.getPlayers().get(0).getGps(),pac.getGps());
+			Segment way = new Segment(this.game.getPlayers().get(0).getGps(), pac.getGps());
 			boolean notBlocked = CheckIfNotBlocked(way);
 			double distance = convert.distance3d(this.game.getPlayers().get(0).getGps(), pac.getGps());
-			if(distance<minVisibalePacman && notBlocked) {
+			if (distance < minVisibalePacman && notBlocked) {
 				minVisibalePacman = distance;
 				pacMin = pac;
 			}
 		}
-		
-		
-		
-		
-		
-	}
 
+	}
 
 	private boolean CheckIfNotBlocked(Segment way) {
 		Iterator<Box> boxIt = this.game.getBoxes().iterator();
-		while(boxIt.hasNext()) {
+		while (boxIt.hasNext()) {
 			Box box = boxIt.next();
-			for(int i=0;i<4;i++) {
+			for (int i = 0; i < 4; i++) {
 				Segment wall = box.getWallBox().getWalls().get(i);
-				if(!isVisibale(way,wall)) {
+				if (!isVisibale(way, wall)) {
 					return false;
 				}
 			}
@@ -136,12 +174,10 @@ public class AutoPlay {
 		return true;
 	}
 
-
 	/**
-	 * this function finds the best location to place the player in the 
-	 * beginning of the game.
-	 * the decision is made depending on how many fruits we have in a cluster.
-	 * it will return the fruit with the most neighboring fruits.
+	 * this function finds the best location to place the player in the beginning of
+	 * the game. the decision is made depending on how many fruits we have in a
+	 * cluster. it will return the fruit with the most neighboring fruits.
 	 */
 	private Point3D findCluster() {
 		double distance = 150;
@@ -149,12 +185,12 @@ public class AutoPlay {
 		Iterator<Fruit> fruitIt = game.getFruits().iterator();
 
 		/* for each fruit finds how many are in range from it */
-		while(fruitIt.hasNext()) {
+		while (fruitIt.hasNext()) {
 			Fruit current = fruitIt.next();
 			Iterator<Fruit> fruitIttwo = game.getFruits().iterator();
-			while(fruitIttwo.hasNext()) {
+			while (fruitIttwo.hasNext()) {
 				Fruit temp = fruitIttwo.next();
-				if(distance>convert.distance3d(current.getGps(), temp.getGps())) {
+				if (distance > convert.distance3d(current.getGps(), temp.getGps())) {
 					current.setFruitsNearMe();
 				}
 			}
@@ -165,44 +201,45 @@ public class AutoPlay {
 		int indexstartFruit = 0;
 		fruitIt = game.getFruits().iterator();
 		/* find the fruit with the most neighbors */
-		while(fruitIt.hasNext()) {
+		while (fruitIt.hasNext()) {
 			Fruit current = fruitIt.next();
 			index++;
-			if(current.getFruitsNearMe()>max) {
+			if (current.getFruitsNearMe() > max) {
 				max = current.getFruitsNearMe();
 				indexstartFruit = index;
 			}
 		}
 
-		/* Checking to see if there is a pacman near the cluster
-		 * if there is start on top of it.
+		/*
+		 * Checking to see if there is a pacman near the cluster if there is start on
+		 * top of it.
 		 */
 		Iterator<Pacman> pacIt = game.getPacmans().iterator();
-		while(pacIt.hasNext()) {
+		while (pacIt.hasNext()) {
 			Pacman pac = pacIt.next();
-			if(convert.distance3d(game.getFruits().get(indexstartFruit).getGps(), pac.getGps())<200) {
+			if (convert.distance3d(game.getFruits().get(indexstartFruit).getGps(), pac.getGps()) < 200) {
 				double x = pac.getGps().x();
 				double y = pac.getGps().y();
-				Point3D startPoint = new Point3D(x,y,0);
+				Point3D startPoint = new Point3D(x, y, 0);
 				return startPoint;
 			}
 		}
 
-
 		double x = game.getFruits().get(indexstartFruit).getGps().x();
-		double y = game.getFruits().get(indexstartFruit).getGps().y();	
-		Point3D startPoint = new Point3D(x,y,0);
+		double y = game.getFruits().get(indexstartFruit).getGps().y();
+		Point3D startPoint = new Point3D(x, y, 0);
 		return startPoint;
 	}
 
 	/**
 	 * This function tells if the way between two points is blocked by a segment.
 	 * This function work with gps points lat and lon.
+	 * 
 	 * @param way , the line we check if blocked.
-	 * @param wall, the blocking line.
+	 * @param     wall, the blocking line.
 	 * @return true if way not blocked.
 	 */
-	private static boolean isVisibale (Segment way, Segment wall) {
+	private static boolean isVisibale(Segment way, Segment wall) {
 		double x1 = way.getA().y();
 		double x2 = way.getB().y();
 		double y1 = way.getA().x();
@@ -213,31 +250,30 @@ public class AutoPlay {
 		double wx2 = wall.getB().y();
 		double wy2 = wall.getB().x();
 
-		if(wall.isVertical() == true) {
-			if(x1<= wx1 && wx1 <= x2 || x2<= wx1 && wx1 <= x1 ) {
-				double m = (y2-y1) / (x2-x1);
-				double b = y1 - (m*x1);
-				double y = m*(wx1) + b;
+		if (wall.isVertical() == true) {
+			if (x1 <= wx1 && wx1 <= x2 || x2 <= wx1 && wx1 <= x1) {
+				double m = (y2 - y1) / (x2 - x1);
+				double b = y1 - (m * x1);
+				double y = m * (wx1) + b;
 
-				if(wy1 <= y && y <=wy2 || wy2 <= y && y <=wy1 ) {
+				if (wy1 <= y && y <= wy2 || wy2 <= y && y <= wy1) {
 					return false;
 				}
 			}
-		}
-		else {
-			if(y1<= wy1 && wy1 <= y2 || y2<= wy1 && wy1 <= y1) {
-				double dx = x2-x1;
-				double dy = y2-y1;
-				if(Math.abs(dx)<0.00001) {
+		} else {
+			if (y1 <= wy1 && wy1 <= y2 || y2 <= wy1 && wy1 <= y1) {
+				double dx = x2 - x1;
+				double dy = y2 - y1;
+				if (Math.abs(dx) < 0.00001) {
 					x2 = x2 + 0.00001;
 				}
-				if(Math.abs(dy)<0.00001) {
-					y2= y2 + 0.00001;
+				if (Math.abs(dy) < 0.00001) {
+					y2 = y2 + 0.00001;
 				}
-				double m = (y2-y1) / (x2-x1);
-				double b = y1 - (m*x1);
-				double x = (wy1-b)/m;
-				if(wx1 <= x && x <= wx2|| wx2 <=x && x<=wx1) {
+				double m = (y2 - y1) / (x2 - x1);
+				double b = y1 - (m * x1);
+				double x = (wy1 - b) / m;
+				if (wx1 <= x && x <= wx2 || wx2 <= x && x <= wx1) {
 					return false;
 				}
 			}
@@ -268,4 +304,3 @@ public class AutoPlay {
 //       
 //	}
 }
-

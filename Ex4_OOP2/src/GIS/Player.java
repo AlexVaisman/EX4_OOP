@@ -2,6 +2,7 @@ package GIS;
 
 import java.awt.Color;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import Coords.MyCoords;
 import Geom.Point3D;
@@ -14,6 +15,7 @@ public class Player {
 	private double orientation;
 	private Color color;
 	private int picSize;
+	private ArrayList<Corner> whatISee;
 
 	public Player(String[] line) throws ParseException {
 		id = Integer.parseInt(line[1]);
@@ -26,6 +28,7 @@ public class Player {
 		this.speed = Double.parseDouble(line[5]);
 		this.radius = Double.parseDouble(line[6]);
 		this.orientation = 0;
+		this.whatISee = new ArrayList<Corner>();
 		
 		/* Player GUI representation settings */
 		this.color = Color.PINK;
@@ -70,6 +73,10 @@ public class Player {
 
 	public void setOrientation(double orientation) {
 		this.orientation = orientation;
+	}
+
+	public ArrayList<Corner> getWhatISee() {
+		return whatISee;
 	}
 
 }
