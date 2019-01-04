@@ -4,7 +4,10 @@ package GIS;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import File_format.MyFileUtils;
+import Geom.Point3D;
 import Gui.Map;
 
 /**
@@ -22,6 +25,7 @@ public class Game {
 	private ArrayList<Ghost> ghosts;
 	private ArrayList<Box> boxes;
 	private ArrayList<Player> players;
+	private ArrayList<Corner> corners;
 	private Map map;
 
 	/**
@@ -39,8 +43,9 @@ public class Game {
 		this.ghosts = new ArrayList<Ghost>();
 		this.boxes = new ArrayList<Box>();
 		this.players = new ArrayList<Player>();
+		this.corners = new ArrayList<Corner>();
 		this.map = new Map(bounds);
-        
+
 		String line[] = {};
 
 		/*
@@ -124,7 +129,36 @@ public class Game {
 			}
 
 		}
+		CheckIfCornerInBox();
 
+	}
+
+	private void CheckIfCornerInBox() {
+		Iterator<Box> boxIt = this.boxes.iterator();
+		boolean flag = true;
+		
+		/* for all box points check if point is in a box */
+		while(boxIt.hasNext()) {
+			Box box = boxIt.next();
+			for(int i = 0 ; i<4;i++) {
+				Point3D vpoint = box.getVBox().getVboxCorners().get(i);
+				Iterator<Box> boxIt2 = this.boxes.iterator();
+              
+				/* this checks for all boxes if corner is in */
+				while(boxIt2.hasNext()) {
+					Box box2 = boxIt2.next();
+					if(box2.isIn(vpoint)) {
+						flag = false;
+					}
+				}
+				/* if corner is not in add it to arraylist of corners */
+				if(flag==true) {
+					Corner corner = new Corner (vpoint);
+					this.corners.add(corner);
+				}
+				flag = true;
+			}
+		}
 	}
 
 	public void updateTheGame(ArrayList<String> board_data) {
@@ -217,13 +251,14 @@ public class Game {
 		}
 
 	}
-	
+
 	public void clearGame() {
 		this.fruits.clear();
 		this.pacmans.clear();
 		this.ghosts.clear();
 		this.boxes.clear();
 		this.players.clear();
+		this.corners.clear();
 	}
 
 	/* Getters */

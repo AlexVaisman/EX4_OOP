@@ -215,26 +215,26 @@ public class AutoPlay {
 		return true;
 	}
 
-//	public static void main(String[] args) {  
-//		// check vertical
-////		Point3D b9 = new Point3D (32.103352, 35.209148 , 0);
-////	    Point3D b3 = new Point3D (32.103321, 35.207316 , 0);
-////	    Segment way = new Segment(b9,b3);
-////	    Point3D kaikar = new Point3D (32.102485, 35.207727 , 0);
-////	    Point3D kaikarveod100 = new Point3D (32.104685, 35.207727 , 0);
-////	    Segment wall = new Segment(kaikar,kaikarveod100);
-////	    System.out.println(isVisibale(way,wall));
+	public static void main(String[] args) {  
+		// check vertical
+//		Point3D b9 = new Point3D (32.103352, 35.209148 , 0);
+//	    Point3D b3 = new Point3D (32.103321, 35.207316 , 0);
+//	    Segment way = new Segment(b9,b3);
+//	    Point3D kaikar = new Point3D (32.102485, 35.207727 , 0);
+//	    Point3D kaikarveod100 = new Point3D (32.104685, 35.207727 , 0);
+//	    Segment wall = new Segment(kaikar,kaikarveod100);
+//	    System.out.println(isVisibale(way,wall));
+	    
+		// check horizontal
+//		Point3D b9 = new Point3D (32.102942082587504,35.209646600669004, 0);
+//		Point3D b3 = new Point3D (32.10364611762156,35.210028200780506, 0);
+//		Segment way = new Segment(b9,b3);
 //	    
-//		// check horizontal
-////		Point3D b9 = new Point3D (32.102942082587504,35.209646600669004, 0);
-////		Point3D b3 = new Point3D (32.10364611762156,35.210028200780506, 0);
-////		Segment way = new Segment(b9,b3);
-////	    
-////	    Point3D kaikar = new Point3D (32.103321, 35.203852 , 0);
-////	    Point3D kaikarveod100 = new Point3D (32.103321, 35.204252, 0);
-////	    Segment wall = new Segment(kaikar,kaikarveod100);
-//	    
-//
-//	}
+//	    Point3D kaikar = new Point3D (32.103321, 35.203852 , 0);
+//	    Point3D kaikarveod100 = new Point3D (32.103321, 35.204252, 0);
+//	    Segment wall = new Segment(kaikar,kaikarveod100);
+	    
+       
+	}
 }
 
