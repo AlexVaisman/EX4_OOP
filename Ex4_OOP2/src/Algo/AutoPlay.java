@@ -142,8 +142,6 @@ public class AutoPlay {
 				double distanceNotVisibale = 0;
 				if (distanceNotVisibale < minNotVisibleFruit) {
 
-					Node b = G.getNodeByName(target);
-				b.g
 					
 					minNotVisibleFruit = distanceNotVisibale;
 					fruitminNotVisibale = fruit;
