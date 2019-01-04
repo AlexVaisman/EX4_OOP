@@ -2,6 +2,7 @@ package Gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
@@ -46,7 +47,6 @@ public class MyFrame extends JFrame implements MouseListener {
 	private boolean isGameLoaded;
 	private boolean isPlayer;
 	private Play play1;
-	private double orientation;
 
 	public MyFrame() {
 
@@ -225,8 +225,9 @@ public class MyFrame extends JFrame implements MouseListener {
 	 * the gui running a simulation or not.
 	 */
 	public void paint(Graphics g) {
-		
-		g.drawImage(this.myImage, 0, 50, this.getWidth() - 7, this.getHeight() - 58, this);
+		Image image = createImage(5000, 5000);
+		Graphics g1 = image.getGraphics();
+		g1.drawImage(this.myImage, 0, 50, this.getWidth() - 7, this.getHeight() - 58, this);
 		
 		if (isGameLoaded) {
 			this.game.getMap().setHeight(this.getHeight());
@@ -242,8 +243,8 @@ public class MyFrame extends JFrame implements MouseListener {
 				int r = pac.getPicSize();
 				int x = pixel.getX() - (r / 2);
 				int y = pixel.getY() - (r / 2);
-				g.setColor(pac.getColor());
-				g.fillOval(x, y, r, r);
+				g1.setColor(pac.getColor());
+				g1.fillOval(x, y, r, r);
 
 			}
 
@@ -256,8 +257,8 @@ public class MyFrame extends JFrame implements MouseListener {
 				int r = fruit.getPicSize();
 				int x = pixel.getX() - (r / 2);
 				int y = pixel.getY() - (r / 2);
-				g.setColor(fruit.getColor());
-				g.fillOval(x, y, r, r);
+				g1.setColor(fruit.getColor());
+				g1.fillOval(x, y, r, r);
 			}
 
 			/* Draw ghosts */
@@ -269,8 +270,8 @@ public class MyFrame extends JFrame implements MouseListener {
 				int r = ghost.getPicSize();
 				int x = pixel.getX() - (r / 2);
 				int y = pixel.getY() - (r / 2);
-				g.setColor(ghost.getColor());
-				g.fillOval(x, y, r, r);
+				g1.setColor(ghost.getColor());
+				g1.fillOval(x, y, r, r);
 			}
 
 			/* Draw boxes */
@@ -286,8 +287,8 @@ public class MyFrame extends JFrame implements MouseListener {
 
 				Pixel pixelTopLeft = convert.convertGPStoPixel(box.getTopLeft());
 
-				g.setColor(Color.BLACK);
-				g.fillRect(pixelTopLeft.getX(), pixelTopLeft.getY(), width, height);
+				g1.setColor(Color.BLACK);
+				g1.fillRect(pixelTopLeft.getX(), pixelTopLeft.getY(), width, height);
 
 			}
 
@@ -302,12 +303,12 @@ public class MyFrame extends JFrame implements MouseListener {
 					int r = player.getPicSize();
 					int x = pixel.getX() - (r / 2);
 					int y = pixel.getY() - (r / 2);
-					g.setColor(player.getColor());
-					g.fillOval(x, y, r, r);
+					g1.setColor(player.getColor());
+					g1.fillOval(x, y, r, r);
 				}
 			}
 		}
-
+		g.drawImage(image, 0, 0, this);
 	}
 
 	public void mouseClicked(MouseEvent e) {
