@@ -39,17 +39,18 @@ public class AutoPlay {
 			play1.setInitLocation(start.x(), start.y());
 			ArrayList<String> board_data = play1.getBoard();
 			game.updateTheGame(board_data);
-			System.out.println(this.game.getPlayers().get(0).getGps());
+
 			FindWhatCornersCornerSees();
 			FindWhatFruitsCornerSees();
 		}
-		
-		
+
+
 		FindWhatCornersPlayerSees();
-		
-		BuildGraph g = new BuildGraph(this.game.getPlayers().get(0),this.game.getCorners(),this.game.getFruits().get(0));
-		System.out.println("DE FRUIT: "+this.game.getFruits().get(0).getGps());
-		System.out.println(g.getAns().getDist());
+		for(int i = 0; i<this.game.getFruits().size();i++) {
+			BuildGraph g = new BuildGraph(this.game.getPlayers().get(0),this.game.getCorners(),this.game.getFruits().get(i));
+			System.out.println("DE FRUIT: "+this.game.getFruits().get(i).getGps());
+			System.out.println(g.getAns().getDist());
+		}
 
 
 		//FindClosestFood();
@@ -137,17 +138,18 @@ public class AutoPlay {
 			Fruit fruit = fruitIt.next();
 			Segment way = new Segment(this.game.getPlayers().get(0).getGps(), fruit.getGps());
 			boolean notBlocked = CheckIfNotBlocked(way);
-			double distance = convert.distance3d(this.game.getPlayers().get(0).getGps(), fruit.getGps());
+			double distanceAir = convert.distance3d(this.game.getPlayers().get(0).getGps(), fruit.getGps());
 
-			if (distance < minVisibleFruit && notBlocked) {
-				minVisibleFruit = distance;
+			if (distanceAir < minVisibleFruit && notBlocked) {
+				minVisibleFruit = distanceAir;
 				fruitmin = fruit;
-			} else if (!notBlocked) {
-				// double distancNOTVISIBALE =functin boaz
+			} else if (distanceAir< minVisibleFruit  && !notBlocked) {
 
+				BuildGraph g = new BuildGraph(this.game.getPlayers().get(0),this.game.getCorners(),fruit);
+				Path path =new Path(g.getAns());
 
-
-				double distanceNotVisibale = 0;
+				double distanceNotVisibale = path.getDistance();
+				System.out.println(distanceNotVisibale + " GPS: "+ fruit.getGps());
 				if (distanceNotVisibale < minNotVisibleFruit) {
 
 

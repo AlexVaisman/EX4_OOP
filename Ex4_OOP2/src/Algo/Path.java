@@ -14,6 +14,7 @@ public class Path {
 	public Path(Node data) {
 		this.data = data;
 		this.distance = data.getDist();
+		this.theWay = new ArrayList<Integer>();
 		ConvertToInt();
 	}
 

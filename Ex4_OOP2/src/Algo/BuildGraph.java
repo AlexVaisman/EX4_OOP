@@ -19,13 +19,22 @@ public class BuildGraph {
 	private Graph G;
 	private Node ans;
 
+	
+	private static int NextId = 0;//------------------------------
+	private final int myId;
+
 	public BuildGraph(Player player, ArrayList<Corner> corners, Fruit fruit) {
 		this.corners = corners;
 		this.player = player;
 		this.fruit = fruit;
 		this.G = new Graph();
+		
+		
+		this.myId = NextId++;//-------------------------------
 
+		
 		InitGraph();
+
 	}
 
 	private void InitGraph() {
@@ -33,7 +42,9 @@ public class BuildGraph {
 		String target = "fruit";
 		int size = this.corners.size();
 
-		G.add(new Node(source)); // adding player
+
+        Node pStart = new Node(source);
+		G.add(pStart); // adding player
 
 		// adding all corners to the graph with their id
 		Iterator<Corner> cornIt = this.corners.iterator();
@@ -42,11 +53,16 @@ public class BuildGraph {
 			Node d = new Node(id);
 			G.add(d);
 		}
-		G.add(new Node(target)); // adding fruit
+		Node tFruit = new Node(target);
+		G.add(tFruit); // adding fruit
 		AddEdges();
-		Graph_Algo.dijkstra(G, source);
+        
+		if(this.myId==0) {
+			Graph_Algo.dijkstra(G, source);
+		}
 		Node b = G.getNodeByName(target);
 		this.ans = b;
+
 	}
 
 	private void AddEdges() {
@@ -67,6 +83,7 @@ public class BuildGraph {
 				G.addEdge("" + corn.getMyId(), "" + corn.getWhatISee().get(i).getMyId(), distance);
 			}
 
+
 			for (int i = 0; i < corn.getWhatFruitIsee().size(); i++) {
 				Fruit seeFruit = corn.getWhatFruitIsee().get(i);
 
@@ -77,7 +94,6 @@ public class BuildGraph {
 				}
 			}
 		}
-
 	}
 
 	/* Getters */
