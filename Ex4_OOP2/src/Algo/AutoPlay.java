@@ -12,6 +12,8 @@ import GIS.Pacman;
 import GIS.Player;
 import Geom.Point3D;
 import Robot.Play;
+import graph.Graph;
+import graph.Graph_Algo;
 import graph.Node;
 
 public class AutoPlay {
@@ -34,7 +36,7 @@ public class AutoPlay {
 		 * If this is the first time the algo is called we need to find where to place
 		 * the player and what corners see.
 		 */
-		if (line[3].contains("Time left:0.0")) {   //line[3].contains("Time left:100000.
+		if (line[3].contains("Time left:0.0")) { // line[3].contains("Time left:100000.
 			Point3D start = findCluster();
 			play1.setInitLocation(start.x(), start.y());
 			ArrayList<String> board_data = play1.getBoard();
@@ -44,16 +46,22 @@ public class AutoPlay {
 			FindWhatFruitsCornerSees();
 		}
 
-
 		FindWhatCornersPlayerSees();
-		for(int i = 0; i<this.game.getFruits().size();i++) {
-			BuildGraph g = new BuildGraph(this.game.getPlayers().get(0),this.game.getCorners(),this.game.getFruits().get(i));
-			System.out.println("DE FRUIT: "+this.game.getFruits().get(i).getGps());
+		
+		Graph G = new Graph();
+		
+		for (int i = 0; i < this.game.getFruits().size(); i++) {
+			
+
+			BuildGraph g = new BuildGraph(G, this.game.getPlayers().get(0), this.game.getCorners(),
+					this.game.getFruits().get(i));
+			System.out.println("DE FRUIT: " + this.game.getFruits().get(i).getGps());
 			System.out.println(g.getAns().getDist());
+			
+			G.clear_meta_data();
 		}
 
-
-		//FindClosestFood();
+		// FindClosestFood();
 		// CheckIfGhosetInRadius();
 
 	}
@@ -143,15 +151,14 @@ public class AutoPlay {
 			if (distanceAir < minVisibleFruit && notBlocked) {
 				minVisibleFruit = distanceAir;
 				fruitmin = fruit;
-			} else if (distanceAir< minVisibleFruit  && !notBlocked) {
+			} else if (distanceAir < minVisibleFruit && !notBlocked) {
 
-				BuildGraph g = new BuildGraph(this.game.getPlayers().get(0),this.game.getCorners(),fruit);
-				Path path =new Path(g.getAns());
+				BuildGraph g = new BuildGraph(this.game.getPlayers().get(0), this.game.getCorners(), fruit);
+				Path path = new Path(g.getAns());
 
 				double distanceNotVisibale = path.getDistance();
-				System.out.println(distanceNotVisibale + " GPS: "+ fruit.getGps());
+				System.out.println(distanceNotVisibale + " GPS: " + fruit.getGps());
 				if (distanceNotVisibale < minNotVisibleFruit) {
-
 
 					minNotVisibleFruit = distanceNotVisibale;
 					fruitminNotVisibale = fruit;
@@ -298,25 +305,25 @@ public class AutoPlay {
 		return true;
 	}
 
-	//	public static void main(String[] args) {  
-	//		// check vertical
-	////		Point3D b9 = new Point3D (32.103352, 35.209148 , 0);
-	////	    Point3D b3 = new Point3D (32.103321, 35.207316 , 0);
-	////	    Segment way = new Segment(b9,b3);
-	////	    Point3D kaikar = new Point3D (32.102485, 35.207727 , 0);
-	////	    Point3D kaikarveod100 = new Point3D (32.104685, 35.207727 , 0);
-	////	    Segment wall = new Segment(kaikar,kaikarveod100);
-	////	    System.out.println(isVisibale(way,wall));
-	//	    
-	//		// check horizontal
-	////		Point3D b9 = new Point3D (32.102942082587504,35.209646600669004, 0);
-	////		Point3D b3 = new Point3D (32.10364611762156,35.210028200780506, 0);
-	////		Segment way = new Segment(b9,b3);
-	////	    
-	////	    Point3D kaikar = new Point3D (32.103321, 35.203852 , 0);
-	////	    Point3D kaikarveod100 = new Point3D (32.103321, 35.204252, 0);
-	////	    Segment wall = new Segment(kaikar,kaikarveod100);
-	//	    
-	//       
-	//	}
+	// public static void main(String[] args) {
+	// // check vertical
+	//// Point3D b9 = new Point3D (32.103352, 35.209148 , 0);
+	//// Point3D b3 = new Point3D (32.103321, 35.207316 , 0);
+	//// Segment way = new Segment(b9,b3);
+	//// Point3D kaikar = new Point3D (32.102485, 35.207727 , 0);
+	//// Point3D kaikarveod100 = new Point3D (32.104685, 35.207727 , 0);
+	//// Segment wall = new Segment(kaikar,kaikarveod100);
+	//// System.out.println(isVisibale(way,wall));
+	//
+	// // check horizontal
+	//// Point3D b9 = new Point3D (32.102942082587504,35.209646600669004, 0);
+	//// Point3D b3 = new Point3D (32.10364611762156,35.210028200780506, 0);
+	//// Segment way = new Segment(b9,b3);
+	////
+	//// Point3D kaikar = new Point3D (32.103321, 35.203852 , 0);
+	//// Point3D kaikarveod100 = new Point3D (32.103321, 35.204252, 0);
+	//// Segment wall = new Segment(kaikar,kaikarveod100);
+	//
+	//
+	// }
 }

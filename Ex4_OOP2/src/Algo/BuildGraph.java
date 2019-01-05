@@ -7,6 +7,7 @@ import Coords.MyCoords;
 import GIS.Corner;
 import GIS.Fruit;
 import GIS.Player;
+import graph.Edge;
 import graph.Graph;
 import graph.Graph_Algo;
 import graph.Node;
@@ -19,31 +20,31 @@ public class BuildGraph {
 	private Graph G;
 	private Node ans;
 
-	
-	private static int NextId = 0;//------------------------------
+	private static int NextId = 0;// ------------------------------
 	private final int myId;
 
-	public BuildGraph(Player player, ArrayList<Corner> corners, Fruit fruit) {
+	public BuildGraph(Graph G, Player player, ArrayList<Corner> corners, Fruit fruit) {
+		G.clear_meta_data();
+		
 		this.corners = corners;
 		this.player = player;
 		this.fruit = fruit;
-		this.G = new Graph();
-		
-		
-		this.myId = NextId++;//-------------------------------
+		this.G = G;
 
-		
+		this.myId = NextId++;// -------------------------------
+
 		InitGraph();
+
+//		Graph_Algo.clearGraphData(G);
+//		G.clear_meta_data();
 
 	}
 
 	private void InitGraph() {
 		String source = "player";
 		String target = "fruit";
-		int size = this.corners.size();
 
-
-        Node pStart = new Node(source);
+		Node pStart = new Node(source);
 		G.add(pStart); // adding player
 
 		// adding all corners to the graph with their id
@@ -55,11 +56,10 @@ public class BuildGraph {
 		}
 		Node tFruit = new Node(target);
 		G.add(tFruit); // adding fruit
+		
 		AddEdges();
-        
-		if(this.myId==0) {
-			Graph_Algo.dijkstra(G, source);
-		}
+		Graph_Algo.dijkstra(G, source);
+
 		Node b = G.getNodeByName(target);
 		this.ans = b;
 
@@ -67,7 +67,11 @@ public class BuildGraph {
 
 	private void AddEdges() {
 		MyCoords convert = new MyCoords();
-
+		
+		for(int i = 0 ; i < G.size(); i++) {
+			G.getNodeByIndex(i).get_ni().clear();
+		}
+		
 		/* added edges that the player sees */
 		for (int i = 0; i < this.player.getWhatISee().size(); i++) {
 			Corner corn = this.player.getWhatISee().get(i);
@@ -82,8 +86,6 @@ public class BuildGraph {
 				double distance = convert.distance3d(corn.getGps(), corn.getWhatISee().get(i).getGps());
 				G.addEdge("" + corn.getMyId(), "" + corn.getWhatISee().get(i).getMyId(), distance);
 			}
-
-
 			for (int i = 0; i < corn.getWhatFruitIsee().size(); i++) {
 				Fruit seeFruit = corn.getWhatFruitIsee().get(i);
 
