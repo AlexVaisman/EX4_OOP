@@ -28,7 +28,13 @@ public class AutoPlay {
 		this.G = new Graph();
 		
 		startAlgo();
+	}
+	
+	public void UpdateAlgo(Game game, Play play1) {
+		this.game = game;
+		this.play1 = play1;
 		
+		startAlgo();
 	}
 
 	private void startAlgo() {
@@ -53,7 +59,7 @@ public class AutoPlay {
 
 		FindWhatCornersPlayerSees();
 		
-		Graph G = new Graph();
+		
 		
 //		for (int i = 0; i < this.game.getFruits().size(); i++) {
 //			

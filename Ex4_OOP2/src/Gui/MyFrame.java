@@ -162,7 +162,30 @@ public class MyFrame extends JFrame implements MouseListener {
 
 	private void ChooseButtonStartSim() {
 		AutoPlay start= new AutoPlay(this.game,this.play1);
+		play1.start();
 		repaint();
+		Thread t2 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+                
+				while (play1.isRuning()) {
+					start.UpdateAlgo(game, play1);
+					
+					play1.rotate(game.getPlayers().get(0).getOrientation());
+					ArrayList<String> board_data = play1.getBoard();
+					game.updateTheGame(board_data);
+					
+					repaint();
+					try {
+						Thread.sleep(150);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		t2.start();
 
 	}
 
