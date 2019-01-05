@@ -20,23 +20,15 @@ public class BuildGraph {
 	private Graph G;
 	private Node ans;
 
-	private static int NextId = 0;// ------------------------------
-	private final int myId;
-
 	public BuildGraph(Graph G, Player player, ArrayList<Corner> corners, Fruit fruit) {
 		G.clear_meta_data();
-		
 		this.corners = corners;
 		this.player = player;
 		this.fruit = fruit;
 		this.G = G;
-
-		this.myId = NextId++;// -------------------------------
+	
 
 		InitGraph();
-
-//		Graph_Algo.clearGraphData(G);
-//		G.clear_meta_data();
 
 	}
 
