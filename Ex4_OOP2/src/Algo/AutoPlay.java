@@ -24,16 +24,18 @@ public class AutoPlay {
 
 	private int LastId[];
 	private int counter;
-	private int bugFix;
+	private int count;
+	private boolean manover;
 
 	public AutoPlay(Game game, Play play1) {
 		this.game = game;
 		this.play1 = play1;
 		this.G = new Graph();
 
-		this.LastId = new int[5];
+		this.LastId = new int[2];
 		this.counter = 0;
-		this.bugFix = 0;
+		this.manover = false;
+		this.count = 0;
 
 		startAlgo();
 	}
@@ -60,28 +62,11 @@ public class AutoPlay {
 			play1.setInitLocation(start.x(), start.y());
 			ArrayList<String> board_data = play1.getBoard();
 			game.updateTheGame(board_data);
-
 			FindWhatCornersCornerSees();
 			FindWhatFruitsCornerSees();
 		}
-
 		FindWhatCornersPlayerSees();
-
-		// for (int i = 0; i < this.game.getFruits().size(); i++) {
-		//
-		//
-		// BuildGraph g = new BuildGraph(G, this.game.getPlayers().get(0),
-		// this.game.getCorners(),
-		// this.game.getFruits().get(i));
-		// System.out.println("DE FRUIT: " + this.game.getFruits().get(i).getGps());
-		// System.out.println(g.getAns().getDist());
-		//
-		//
-		// }
-
 		FindClosestFood();
-		// CheckIfGhosetInRadius();
-
 	}
 
 	private void FindWhatFruitsCornerSees() {
@@ -152,6 +137,7 @@ public class AutoPlay {
 	 * 
 	 */
 	private void FindClosestFood() {
+
 		Iterator<Fruit> fruitIt = this.game.getFruits().iterator();
 		double minVisibleFruit = 1000000;
 		double minNotVisibleFruit = 1000000;
@@ -199,46 +185,49 @@ public class AutoPlay {
 
 		int target = FindMinDistance(minVisibleFruit, minNotVisibleFruit, minVisibalePacman);
 		// visible fruit
-		if (target == 1) {
+		if (target == 1 ) {
 			this.game.getPlayers().get(0).findOrientation(fruitmin.getGps());
-			System.out.println("Target == 1");
 		}
 		// not visible
-		if (target == 2) {
-			int cornId = this.path.getTheWay().get(0);
-			Point3D corn = this.game.getCorners().get(cornId).getGps();
-			this.game.getPlayers().get(0).findOrientation(corn);
-			// System.out.println("Target == 2 , Cornid: " + cornId);
-			this.LastId[this.counter % 5] = cornId;
-			this.counter++;
+		if (target == 2 || this.manover == true) {
+			if (this.manover == false) {
+				int cornId = this.path.getTheWay().get(0);
+				Point3D corn = this.game.getCorners().get(cornId).getGps();
+				this.game.getPlayers().get(0).findOrientation(corn);
+				this.LastId[this.counter % 2] = cornId;
+				this.counter++;
+			}
 
 			// System.out.println("first: "+this.LastId[0]+"second: "+ this.LastId[1]+"
 			// Third: "+this.LastId[2]+" Fourth: "+this.LastId[3]+" fifth:
 			// "+this.LastId[4]);
 			// 17second: 22 Third: 17 Fourth: 22 fifth: 17
-			if (this.LastId[0] == this.LastId[2] && this.LastId[2] == this.LastId[4] && this.LastId[1] == this.LastId[3]
-					&& this.LastId[0] != this.LastId[1]) {
-				int count = 0;
-				System.out.println("??????");
-				while (count < 25) {
-					if (count < 5) {
+			if (this.LastId[0] == 16&& this.LastId[1] == 17 ||this.LastId[1] == 16&& this.LastId[0] == 17 ) {
+
+				this.manover = true;
+				if (count < 25) {
+					if(count<3) {
+						this.game.getPlayers().get(0).setOrientation(270.0);
+						play1.rotate(game.getPlayers().get(0).getOrientation());
+					}
+					if (count >=3&& count<15) {
 						this.game.getPlayers().get(0).setOrientation(0.0);
 						play1.rotate(game.getPlayers().get(0).getOrientation());
-					} else {
+					} 
+					if(count >=15) {
 						this.game.getPlayers().get(0).setOrientation(90.0);
 						play1.rotate(game.getPlayers().get(0).getOrientation());
 					}
-                     
 					count++;
-					this.bugFix++;
-
+					if (count >= 25) {
+						this.manover = false;
+					}
 				}
 			}
 		}
 		// pacman
 		if (target == 3) {
 			this.game.getPlayers().get(0).findOrientation(pacMin.getGps());
-			System.out.println("Target == 3");
 		}
 
 	}
