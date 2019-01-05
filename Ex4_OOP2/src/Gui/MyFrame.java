@@ -177,7 +177,7 @@ public class MyFrame extends JFrame implements MouseListener {
 					
 					repaint();
 					try {
-						Thread.sleep(150);
+						Thread.sleep(1);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -208,6 +208,7 @@ public class MyFrame extends JFrame implements MouseListener {
 				/* Load the new game to the game board */
 				play1 = new Play(filePath);
 				play1.setIDs(206125767, 317524445);
+				
 				String map_data = play1.getBoundingBox();
 				ArrayList<String> board_data = play1.getBoard();
 				this.game = new Game(board_data, map_data);
@@ -376,7 +377,7 @@ public class MyFrame extends JFrame implements MouseListener {
 			Point3D gpsDirection = new Point3D(convert.convertPixeltoGPS(pixDirection));
 			game.getPlayers().get(0).findOrientation(gpsDirection);
 			//play1.rotate(game.getPlayers().get(0).getOrientation());
-			System.out.println(play1.getStatistics());
+			//System.out.println(play1.getStatistics());
 			repaint();
 		}
 	}

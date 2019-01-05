@@ -19,21 +19,21 @@ import graph.Node;
 public class AutoPlay {
 	private Game game;
 	private Play play1;
-	private Graph G ;
+	private Graph G;
 	private Path path;
 
 	public AutoPlay(Game game, Play play1) {
 		this.game = game;
 		this.play1 = play1;
 		this.G = new Graph();
-		
+
 		startAlgo();
 	}
-	
+
 	public void UpdateAlgo(Game game, Play play1) {
 		this.game = game;
 		this.play1 = play1;
-		
+
 		startAlgo();
 	}
 
@@ -58,21 +58,20 @@ public class AutoPlay {
 		}
 
 		FindWhatCornersPlayerSees();
-		
-		
-		
-//		for (int i = 0; i < this.game.getFruits().size(); i++) {
-//			
-//
-//			BuildGraph g = new BuildGraph(G, this.game.getPlayers().get(0), this.game.getCorners(),
-//					this.game.getFruits().get(i));
-//			System.out.println("DE FRUIT: " + this.game.getFruits().get(i).getGps());
-//			System.out.println(g.getAns().getDist());
-//			
-//			
-//		}
 
-		 FindClosestFood();
+		// for (int i = 0; i < this.game.getFruits().size(); i++) {
+		//
+		//
+		// BuildGraph g = new BuildGraph(G, this.game.getPlayers().get(0),
+		// this.game.getCorners(),
+		// this.game.getFruits().get(i));
+		// System.out.println("DE FRUIT: " + this.game.getFruits().get(i).getGps());
+		// System.out.println(g.getAns().getDist());
+		//
+		//
+		// }
+
+		FindClosestFood();
 		// CheckIfGhosetInRadius();
 
 	}
@@ -164,10 +163,10 @@ public class AutoPlay {
 				fruitmin = fruit;
 			} else if (distanceAir < minVisibleFruit && !notBlocked) {
 
-				BuildGraph g = new BuildGraph(this.G,this.game.getPlayers().get(0), this.game.getCorners(), fruit);
+				BuildGraph g = new BuildGraph(this.G, this.game.getPlayers().get(0), this.game.getCorners(), fruit);
 				this.path = new Path(g.getAns());
 				double distanceNotVisibale = path.getDistance();
-				
+
 				if (distanceNotVisibale < minNotVisibleFruit) {
 					minNotVisibleFruit = distanceNotVisibale;
 					fruitminNotVisibale = fruit;
@@ -189,48 +188,53 @@ public class AutoPlay {
 				pacMin = pac;
 			}
 		}
-		
-		int target = FindMinDistance(minVisibleFruit,minNotVisibleFruit,minVisibalePacman);
-		//visible fruit
-		if(target==1) {
-		this.game.getPlayers().get(0).findOrientation(fruitmin.getGps());	
+
+		int target = FindMinDistance(minVisibleFruit, minNotVisibleFruit, minVisibalePacman);
+		// visible fruit
+		if (target == 1) {
+			this.game.getPlayers().get(0).findOrientation(fruitmin.getGps());
+			System.out.println("Target == 1");
 		}
-		if(target==2) {
+		// not visible
+		if (target == 2) {
+
 			int cornId = this.path.getTheWay().get(0);
-			Point3D corn =this.game.getCorners().get(cornId).getGps();
-			this.game.getPlayers().get(0).findOrientation(corn);	
+			Point3D corn = this.game.getCorners().get(cornId).getGps();
+			this.game.getPlayers().get(0).findOrientation(corn);
+			System.out.println(
+					"Target == 2" + " Gps: " + fruitminNotVisibale.getGps() + " Distance: " + path.getDistance());
+
 		}
-		if(target==3) {
-			this.game.getPlayers().get(0).findOrientation(pacMin.getGps());	
+		// pacman
+		if (target == 3) {
+			this.game.getPlayers().get(0).findOrientation(pacMin.getGps());
+			System.out.println("Target == 3");
 		}
-		
 
 	}
 
-	
 	/**
 	 * This function returns the minimum distance between the 3.
 	 * 
-	 * @param minVisibleFruit ,distance to the visible fruit
+	 * @param minVisibleFruit    ,distance to the visible fruit
 	 * @param minNotVisibleFruit ,distance to the not visible fruit
-	 * @param minVisibalePacman , distance to the visible pacman
+	 * @param minVisibalePacman  , distance to the visible pacman
 	 * @return , return 1 if the visible fruit. returns 2 if the not visible fruit.
-	 *           return 3 if the visible pacman. 
+	 *         return 3 if the visible pacman.
 	 */
-	private int FindMinDistance(double minVisibleFruit,double minNotVisibleFruit,double minVisibalePacman   ) {
-		double min = Math.min(minVisibleFruit, Math.min(minNotVisibleFruit ,minVisibalePacman));
-		
-		if(min==minVisibleFruit) {
+	private int FindMinDistance(double minVisibleFruit, double minNotVisibleFruit, double minVisibalePacman) {
+		double min = Math.min(minVisibleFruit, Math.min(minNotVisibleFruit, minVisibalePacman));
+
+		if (min == minVisibleFruit) {
 			return 1;
 		}
-		if(min==minNotVisibleFruit) {
+		if (min == minNotVisibleFruit) {
 			return 2;
 		}
-		if(min==minVisibalePacman) {
+		if (min == minVisibalePacman) {
 			return 3;
 		}
-		
-		
+
 		return 17;
 	}
 
