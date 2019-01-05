@@ -177,7 +177,7 @@ public class MyFrame extends JFrame implements MouseListener {
 					
 					repaint();
 					try {
-						Thread.sleep(1);
+						Thread.sleep(30);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -380,6 +380,10 @@ public class MyFrame extends JFrame implements MouseListener {
 			//System.out.println(play1.getStatistics());
 			repaint();
 		}
+	}
+	
+	public void myRepaint() {
+		repaint();
 	}
 
 	@Override

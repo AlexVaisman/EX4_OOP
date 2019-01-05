@@ -22,10 +22,18 @@ public class AutoPlay {
 	private Graph G;
 	private Path path;
 
+	private int LastId[];
+	private int counter;
+	private int bugFix;
+
 	public AutoPlay(Game game, Play play1) {
 		this.game = game;
 		this.play1 = play1;
 		this.G = new Graph();
+
+		this.LastId = new int[5];
+		this.counter = 0;
+		this.bugFix = 0;
 
 		startAlgo();
 	}
@@ -197,13 +205,35 @@ public class AutoPlay {
 		}
 		// not visible
 		if (target == 2) {
-
 			int cornId = this.path.getTheWay().get(0);
 			Point3D corn = this.game.getCorners().get(cornId).getGps();
 			this.game.getPlayers().get(0).findOrientation(corn);
-			System.out.println(
-					"Target == 2" + " Gps: " + fruitminNotVisibale.getGps() + " Distance: " + path.getDistance());
+			// System.out.println("Target == 2 , Cornid: " + cornId);
+			this.LastId[this.counter % 5] = cornId;
+			this.counter++;
 
+			// System.out.println("first: "+this.LastId[0]+"second: "+ this.LastId[1]+"
+			// Third: "+this.LastId[2]+" Fourth: "+this.LastId[3]+" fifth:
+			// "+this.LastId[4]);
+			// 17second: 22 Third: 17 Fourth: 22 fifth: 17
+			if (this.LastId[0] == this.LastId[2] && this.LastId[2] == this.LastId[4] && this.LastId[1] == this.LastId[3]
+					&& this.LastId[0] != this.LastId[1]) {
+				int count = 0;
+				System.out.println("??????");
+				while (count < 25) {
+					if (count < 5) {
+						this.game.getPlayers().get(0).setOrientation(0.0);
+						play1.rotate(game.getPlayers().get(0).getOrientation());
+					} else {
+						this.game.getPlayers().get(0).setOrientation(90.0);
+						play1.rotate(game.getPlayers().get(0).getOrientation());
+					}
+                     
+					count++;
+					this.bugFix++;
+
+				}
+			}
 		}
 		// pacman
 		if (target == 3) {
