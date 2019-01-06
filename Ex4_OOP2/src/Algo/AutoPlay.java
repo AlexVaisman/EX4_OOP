@@ -71,7 +71,6 @@ public class AutoPlay {
 		String playerData = play1.getStatistics();
 		String line[] = {};
 		line = playerData.split(",");
-		System.out.println(play1.getStatistics());
 
 		/*
 		 * If this is the first time the algorithm is called we need to find where to

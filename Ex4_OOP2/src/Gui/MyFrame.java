@@ -44,7 +44,7 @@ import Robot.Play;
  */
 public class MyFrame extends JFrame implements MouseListener {
 	private static final long serialVersionUID = 1L;
-	private BufferedImage myImage, ghostImage ,fruitImage, playerImage,pacmanImage;
+	private BufferedImage myImage, ghostImage, fruitImage, playerImage, pacmanImage;
 	private Game game;
 	private boolean isGameLoaded;
 	private boolean isPlayer;
@@ -61,8 +61,8 @@ public class MyFrame extends JFrame implements MouseListener {
 		}
 		this.setTitle("Pacman");
 		isGameLoaded = false;
+
 		this.addMouseListener(this);
-		
 
 		initGUI();
 	}
@@ -214,27 +214,27 @@ public class MyFrame extends JFrame implements MouseListener {
 				String map_data = play1.getBoundingBox();
 				ArrayList<String> board_data = play1.getBoard();
 				this.game = new Game(board_data, map_data);
-				
+
 				/* Ghost GUI image */
-				if(this.game.getGhosts().size() > 0) {
+				if (this.game.getGhosts().size() > 0) {
 					ghostImage = this.game.getGhosts().get(0).getMyImage();
 				}
-				
+
 				/* Fruit GUI image */
-				if(this.game.getFruits().size() > 0) {
-					fruitImage= this.game.getFruits().get(0).getMyImage();
+				if (this.game.getFruits().size() > 0) {
+					fruitImage = this.game.getFruits().get(0).getMyImage();
 				}
-				
+
 				/* Player GUI image */
-				if(this.game.getPlayers().size() > 0) {
-					playerImage= this.game.getPlayers().get(0).getMyImage();
+				if (this.game.getPlayers().size() > 0) {
+					playerImage = this.game.getPlayers().get(0).getMyImage();
 				}
-				
+
 				/* Pacman GUI image */
-				if(this.game.getPacmans().size() > 0) {
-					pacmanImage= this.game.getPacmans().get(0).getMyImage();
+				if (this.game.getPacmans().size() > 0) {
+					pacmanImage = this.game.getPacmans().get(0).getMyImage();
 				}
-				
+
 				isGameLoaded = true;
 				repaint();
 			}
@@ -275,11 +275,13 @@ public class MyFrame extends JFrame implements MouseListener {
 
 		Image image = createImage(5000, 5000);
 		Graphics g1 = image.getGraphics();
+
 		g1.drawImage(this.myImage, 0, 50, this.getWidth() - 7, this.getHeight() - 58, this);
 
 		if (isGameLoaded) {
 			this.game.getMap().setHeight(this.getHeight());
 			this.game.getMap().setWidth(this.getWidth());
+
 			/* Draw pacmans */
 			Iterator<Pacman> pacIt = this.game.getPacmans().iterator();
 			Convert_pixel_gps convert = new Convert_pixel_gps(this.game.getMap());
@@ -287,25 +289,15 @@ public class MyFrame extends JFrame implements MouseListener {
 			while (pacIt.hasNext()) {
 				Pacman pac = pacIt.next();
 				Pixel pixel = convert.convertGPStoPixel(pac.getGps());
-				//int r = pac.getPicSize();
-				//int x = pixel.getX() - (r / 2);
-				//int y = pixel.getY() - (r / 2);
-				//g1.setColor(pac.getColor());
-				//g1.fillOval(x, y, r, r);
 				g1.drawImage(this.pacmanImage, pixel.getX(), pixel.getY(), null);
-
 			}
 
 			/* Draw fruits */
 			Iterator<Fruit> fruitIt = this.game.getFruits().iterator();
 			while (fruitIt.hasNext()) {
 				Fruit fruit = fruitIt.next();
-				Pixel pixel =  convert.convertGPStoPixel(fruit.getGps());
-				//int r = fruit.getPicSize();
-				//int x = pixel.getX() - (r / 2);
-				//int y = pixel.getY() - (r / 2);
-				//g1.setColor(fruit.getColor());
-				g1.drawImage(this.fruitImage, pixel.getX(), pixel.getY()+10, null);
+				Pixel pixel = convert.convertGPStoPixel(fruit.getGps());
+				g1.drawImage(this.fruitImage, pixel.getX(), pixel.getY() + 10, null);
 			}
 
 			/* Draw ghosts */
@@ -313,10 +305,6 @@ public class MyFrame extends JFrame implements MouseListener {
 			while (ghostIt.hasNext()) {
 				Ghost ghost = ghostIt.next();
 				Pixel pixel = convert.convertGPStoPixel(ghost.getGps());
-				// int r = ghost.getPicSize();
-				//int x = pixel.getX();// - (r / 2);
-				//int y = pixel.getY();// - (r / 2);
-				// g1.setColor(ghost.getColor());
 				g1.drawImage(this.ghostImage, pixel.getX(), pixel.getY(), null);
 			}
 
@@ -334,7 +322,7 @@ public class MyFrame extends JFrame implements MouseListener {
 				Pixel pixelTopLeft = convert.convertGPStoPixel(box.getTopLeft());
 
 				g1.setColor(Color.BLACK);
-				g1.fillRect(pixelTopLeft.getX(), pixelTopLeft.getY()+35, width, height);
+				g1.fillRect(pixelTopLeft.getX(), pixelTopLeft.getY() + 35, width, height);
 
 			}
 
@@ -345,37 +333,22 @@ public class MyFrame extends JFrame implements MouseListener {
 				Player player = playerIt.next();
 				if (convert.isIn(player.getGps())) {
 					Pixel pixel = convert.convertGPStoPixel(player.getGps());
-					//int r = player.getPicSize();
-					//int x = pixel.getX() - (r / 2);
-					//int y = pixel.getY() - (r / 2);
-					//g1.setColor(player.getColor());
-					//g1.fillOval(x, y, r, r);
-					g1.drawImage(this.playerImage, pixel.getX()-20, pixel.getY()-15, null);
+					g1.drawImage(this.playerImage, pixel.getX() - 20, pixel.getY() - 15, null);
 				}
 			}
 
-//			/* Draw corners */
-//			Iterator<Corner> cornerIt = this.game.getCorners().iterator();
-//			while (cornerIt.hasNext()) {
-//				Corner corner = cornerIt.next();
-//				Pixel pixel = new Pixel(0, 0);
-//				pixel = convert.convertGPStoPixel(corner.getGps());
-//				int r = 10;
-//				int x = pixel.getX() - (r / 2);
-//				int y = pixel.getY() - (r / 2);
-//				g1.setColor(Color.RED);
-//				g1.fillOval(x, y, r, r);
-//			}
-
 		}
 		g.drawImage(image, 0, 0, this);
+		if (isGameLoaded) {
+			System.out.println(play1.getStatistics());
+		}
 	}
 
 	public void mouseClicked(MouseEvent e) {
 
 		if (isPlayer && isGameLoaded) {
-			int x = e.getX()-15;
-			int y = e.getY()-35;
+			int x = e.getX() - 15;
+			int y = e.getY() - 30;
 			Pixel pixel = new Pixel(x, y);
 			Convert_pixel_gps convert = new Convert_pixel_gps(this.game.getMap());
 			Point3D gps = new Point3D(convert.convertPixeltoGPS(pixel));
@@ -394,8 +367,6 @@ public class MyFrame extends JFrame implements MouseListener {
 			Convert_pixel_gps convert = new Convert_pixel_gps(this.game.getMap());
 			Point3D gpsDirection = new Point3D(convert.convertPixeltoGPS(pixDirection));
 			game.getPlayers().get(0).findOrientation(gpsDirection);
-			// play1.rotate(game.getPlayers().get(0).getOrientation());
-			// System.out.println(play1.getStatistics());
 			repaint();
 		}
 	}
