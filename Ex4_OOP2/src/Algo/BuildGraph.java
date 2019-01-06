@@ -7,11 +7,9 @@ import Coords.MyCoords;
 import GIS.Corner;
 import GIS.Fruit;
 import GIS.Player;
-import graph.Edge;
 import graph.Graph;
 import graph.Graph_Algo;
 import graph.Node;
-import graph.Point3D;
 
 public class BuildGraph {
 	private Player player;

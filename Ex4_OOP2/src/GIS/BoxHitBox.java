@@ -18,10 +18,10 @@ public class BoxHitBox {
 	}
 
 	private void movePoints(Box box) {
-		this.VbotLeft = new Point3D(box.getBotLeft().x()-0.00005,box.getBotLeft().y()-0.00005,0);
-		this.VbotRight = new Point3D(box.getBotRight().x()-0.00005,box.getBotRight().y()+0.00005,0);
-		this.Vtopleft = new Point3D(box.getTopLeft().x()+0.00005,box.getTopLeft().y()-0.00005,0);
-		this.VtopRight = new Point3D(box.getTopRight().x()+0.00005,box.getTopRight().y()+0.00005,0);
+		this.VbotLeft = new Point3D(box.getBotLeft().x()-0.00004,box.getBotLeft().y()-0.00004,0);
+		this.VbotRight = new Point3D(box.getBotRight().x()-0.00004,box.getBotRight().y()+0.00004,0);
+		this.Vtopleft = new Point3D(box.getTopLeft().x()+0.00004,box.getTopLeft().y()-0.00004,0);
+		this.VtopRight = new Point3D(box.getTopRight().x()+0.00004,box.getTopRight().y()+0.00004,0);
 		this.VboxCorners = new  ArrayList<Point3D>();
 		this.VboxCorners.add(this.VbotLeft);
 		this.VboxCorners.add(this.Vtopleft);

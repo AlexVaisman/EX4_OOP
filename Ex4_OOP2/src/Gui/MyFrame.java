@@ -44,7 +44,7 @@ import Robot.Play;
  */
 public class MyFrame extends JFrame implements MouseListener {
 	private static final long serialVersionUID = 1L;
-	private BufferedImage myImage;
+	private BufferedImage myImage, ghostImage ,fruitImage;
 	private Game game;
 	private boolean isGameLoaded;
 	private boolean isPlayer;
@@ -62,6 +62,22 @@ public class MyFrame extends JFrame implements MouseListener {
 		this.setTitle("Pacman");
 		isGameLoaded = false;
 		this.addMouseListener(this);
+		
+		try {
+			this.ghostImage = ImageIO.read(new File("images\\Inky.gif"));
+		} catch (IOException e) {
+			System.err.println("ERROR: incorrect path for picture!");
+			e.printStackTrace();
+		}
+		
+		try {
+			this.fruitImage = ImageIO.read(new File("images\\cherry.png"));
+		} catch (IOException e) {
+			System.err.println("ERROR: incorrect path for picture!");
+			e.printStackTrace();
+		}
+		
+
 		initGUI();
 	}
 
@@ -161,20 +177,20 @@ public class MyFrame extends JFrame implements MouseListener {
 	}
 
 	private void ChooseButtonStartSim() {
-		AutoPlay start= new AutoPlay(this.game,this.play1);
+		AutoPlay start = new AutoPlay(this.game, this.play1);
 		play1.start();
 		repaint();
 		Thread t2 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-                
+
 				while (play1.isRuning()) {
 					start.UpdateAlgo(game, play1);
-					
+
 					play1.rotate(game.getPlayers().get(0).getOrientation());
 					ArrayList<String> board_data = play1.getBoard();
 					game.updateTheGame(board_data);
-					
+
 					repaint();
 					try {
 						Thread.sleep(50);
@@ -208,12 +224,10 @@ public class MyFrame extends JFrame implements MouseListener {
 				/* Load the new game to the game board */
 				play1 = new Play(filePath);
 				play1.setIDs(206125767, 317524445);
-				
+
 				String map_data = play1.getBoundingBox();
 				ArrayList<String> board_data = play1.getBoard();
 				this.game = new Game(board_data, map_data);
-
-				
 
 				isGameLoaded = true;
 				repaint();
@@ -233,7 +247,7 @@ public class MyFrame extends JFrame implements MouseListener {
 					play1.rotate(game.getPlayers().get(0).getOrientation());
 					ArrayList<String> board_data = play1.getBoard();
 					game.updateTheGame(board_data);
-					
+
 					repaint();
 					try {
 						Thread.sleep(150);
@@ -252,10 +266,11 @@ public class MyFrame extends JFrame implements MouseListener {
 	 * the gui running a simulation or not.
 	 */
 	public void paint(Graphics g) {
+
 		Image image = createImage(5000, 5000);
 		Graphics g1 = image.getGraphics();
 		g1.drawImage(this.myImage, 0, 50, this.getWidth() - 7, this.getHeight() - 58, this);
-		
+
 		if (isGameLoaded) {
 			this.game.getMap().setHeight(this.getHeight());
 			this.game.getMap().setWidth(this.getWidth());
@@ -279,26 +294,24 @@ public class MyFrame extends JFrame implements MouseListener {
 			Iterator<Fruit> fruitIt = this.game.getFruits().iterator();
 			while (fruitIt.hasNext()) {
 				Fruit fruit = fruitIt.next();
-				Pixel pixel = new Pixel(0, 0);
-				pixel = convert.convertGPStoPixel(fruit.getGps());
-				int r = fruit.getPicSize();
-				int x = pixel.getX() - (r / 2);
-				int y = pixel.getY() - (r / 2);
-				g1.setColor(fruit.getColor());
-				g1.fillOval(x, y, r, r);
+				Pixel pixel =  convert.convertGPStoPixel(fruit.getGps());
+				//int r = fruit.getPicSize();
+				//int x = pixel.getX() - (r / 2);
+				//int y = pixel.getY() - (r / 2);
+				//g1.setColor(fruit.getColor());
+				g1.drawImage(this.fruitImage, pixel.getX(), pixel.getY(), null);
 			}
 
 			/* Draw ghosts */
 			Iterator<Ghost> ghostIt = this.game.getGhosts().iterator();
 			while (ghostIt.hasNext()) {
 				Ghost ghost = ghostIt.next();
-				Pixel pixel = new Pixel(0, 0);
-				pixel = convert.convertGPStoPixel(ghost.getGps());
-				int r = ghost.getPicSize();
-				int x = pixel.getX() - (r / 2);
-				int y = pixel.getY() - (r / 2);
-				g1.setColor(ghost.getColor());
-				g1.fillOval(x, y, r, r);
+				Pixel pixel = convert.convertGPStoPixel(ghost.getGps());
+				// int r = ghost.getPicSize();
+				//int x = pixel.getX();// - (r / 2);
+				//int y = pixel.getY();// - (r / 2);
+				// g1.setColor(ghost.getColor());
+				g1.drawImage(this.ghostImage, pixel.getX(), pixel.getY(), null);
 			}
 
 			/* Draw boxes */
@@ -334,20 +347,20 @@ public class MyFrame extends JFrame implements MouseListener {
 					g1.fillOval(x, y, r, r);
 				}
 			}
-			
-			/*Draw corners */
+
+			/* Draw corners */
 			Iterator<Corner> cornerIt = this.game.getCorners().iterator();
 			while (cornerIt.hasNext()) {
 				Corner corner = cornerIt.next();
-					Pixel pixel = new Pixel(0, 0);
-					pixel = convert.convertGPStoPixel(corner.getGps());
-					int r = 10;
-					int x = pixel.getX() - (r / 2);
-					int y = pixel.getY() - (r / 2);
-					g1.setColor(Color.RED);
-					g1.fillOval(x, y, r, r);
+				Pixel pixel = new Pixel(0, 0);
+				pixel = convert.convertGPStoPixel(corner.getGps());
+				int r = 10;
+				int x = pixel.getX() - (r / 2);
+				int y = pixel.getY() - (r / 2);
+				g1.setColor(Color.RED);
+				g1.fillOval(x, y, r, r);
 			}
-			
+
 		}
 		g.drawImage(image, 0, 0, this);
 	}
@@ -365,9 +378,8 @@ public class MyFrame extends JFrame implements MouseListener {
 			game.updateTheGame(board_data);
 			repaint();
 			isPlayer = false;
-			
+
 		}
-		
 
 		if (!game.getPlayers().isEmpty()) {
 			int x = e.getX();
@@ -376,13 +388,11 @@ public class MyFrame extends JFrame implements MouseListener {
 			Convert_pixel_gps convert = new Convert_pixel_gps(this.game.getMap());
 			Point3D gpsDirection = new Point3D(convert.convertPixeltoGPS(pixDirection));
 			game.getPlayers().get(0).findOrientation(gpsDirection);
-			//play1.rotate(game.getPlayers().get(0).getOrientation());
-			//System.out.println(play1.getStatistics());
+			// play1.rotate(game.getPlayers().get(0).getOrientation());
+			// System.out.println(play1.getStatistics());
 			repaint();
 		}
 	}
-	
-
 
 	@Override
 	public void mouseEntered(MouseEvent e) {

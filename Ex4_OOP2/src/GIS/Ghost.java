@@ -1,7 +1,12 @@
 package GIS;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
+
+import javax.imageio.ImageIO;
 
 import Geom.Point3D;
 
@@ -10,6 +15,7 @@ public class Ghost {
 	private Mdata_game metaData;
 	private Color color;
 	private int picSize;
+	private BufferedImage myImage;
 	
 
 	public Ghost(String[] line) throws ParseException {
@@ -20,6 +26,13 @@ public class Ghost {
 		this.gps = new Point3D(lat, lon, alt);
 
 		this.metaData = new Mdata_game(line);
+		
+		try {
+			this.myImage = ImageIO.read(new File("images\\Inky.gif"));
+		} catch (IOException e) {
+			System.err.println("ERROR: incorrect path for picture!");
+			e.printStackTrace();
+		}
 		
 		/* Ghost GUI representation settings */
 		this.color = Color.RED;
@@ -45,6 +58,10 @@ public class Ghost {
 
 	public int getPicSize() {
 		return picSize;
+	}
+
+	public BufferedImage getMyImage() {
+		return myImage;
 	}
 	
 }
