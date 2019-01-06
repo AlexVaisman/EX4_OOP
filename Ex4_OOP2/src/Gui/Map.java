@@ -98,7 +98,5 @@ public class Map {
 		this.botRight = botRight;
 	}
 
-	public static void main(String[] args) {
-		Map map = new Map("Bounding Box info: B,0,32.101898,35.202369,0.0,32.105728,35.212416,0.0,1.0");
-	}
+
 }

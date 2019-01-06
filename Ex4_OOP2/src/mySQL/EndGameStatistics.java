@@ -7,7 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
-
+/**
+ * This class creates a connection to msql server and gets end game relevant
+ * data from it.
+ * @author Alex vaisman, Shay naor.
+ */
 public class EndGameStatistics {
 	private int mapId;
 	private double myScore;

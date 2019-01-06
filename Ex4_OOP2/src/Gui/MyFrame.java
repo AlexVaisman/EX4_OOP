@@ -173,6 +173,14 @@ public class MyFrame extends JFrame implements MouseListener {
 
 	}
 
+	/**
+	 * This function starts a simulated game.
+	 * It will create an AutoPlay object which will calculate the next step of the pacman.
+	 * it will start a thread which will call AutoPlay it will then update the player
+	 * orientation then it will update the game and call repaint.
+	 * and the thread will sleep for 100ms.
+	 * if the game ends it will call EndGameStatistics class which will print end game Statistics.
+	 */
 	private void ChooseButtonStartSim() {
 		AutoPlay start = new AutoPlay(this.game, this.play1);
 		play1.start();
@@ -211,6 +219,11 @@ public class MyFrame extends JFrame implements MouseListener {
 
 	}
 
+	
+	/**
+	 * This function prints end game statistics.
+	 * @param test , the object that hold the relevant statistics.
+	 */
 	private void printEndGameStatistics(EndGameStatistics test) {
 
 		System.out.println("\n\n\n\n\n");
@@ -281,6 +294,14 @@ public class MyFrame extends JFrame implements MouseListener {
 
 	}
 
+	/**
+	 * This function starts a manual game.
+	 * it will start a thread which will update the game every 100ms.
+	 * and it will update the player orientation according to what is saved in the myFrame.
+	 * then it will call repaint.
+	 * and the thread will sleep for 100ms.
+	 * if the game ends it will call EndGameStatistics class which will print end game Statistics.
+	 */
 	private void ChooseButtonStartPlay() {
 
 		play1.start();
@@ -317,8 +338,8 @@ public class MyFrame extends JFrame implements MouseListener {
 	}
 
 	/**
-	 * This function will pain the fruits and pacmans on the map. Depending on if
-	 * the gui running a simulation or not.
+	 * This function will the objects on the map.
+	 * it will paint the object only if the gameIsLoaded == true.
 	 */
 	public void paint(Graphics g) {
 
@@ -395,6 +416,8 @@ public class MyFrame extends JFrame implements MouseListener {
 
 	}
 
+	
+	
 	public void mouseClicked(MouseEvent e) {
 
 		if (isPlayer && isGameLoaded) {

@@ -31,7 +31,7 @@ public class Mdata_game implements Meta_data {
 		}
 	}
 
-	/* Check if neccecery**************************************************************!!!!!!!!wERUAHJFGOUHZSRUFaktRFGIysaejkHGZDMLT; */
+
 	/**
 	 * Constructor, creates a default pacman or fruit with default values of
 	 * speedWeight = 1, radius - 1.
