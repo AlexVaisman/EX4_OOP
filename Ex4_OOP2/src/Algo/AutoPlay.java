@@ -364,7 +364,7 @@ public class AutoPlay {
 	 * @param     wall, the blocking line.
 	 * @return true if way not blocked.
 	 */
-	private static boolean isVisibale(Segment way, Segment wall) {
+	private boolean isVisibale(Segment way, Segment wall) {
 		double x1 = way.getA().y();
 		double x2 = way.getB().y();
 		double y1 = way.getA().x();
