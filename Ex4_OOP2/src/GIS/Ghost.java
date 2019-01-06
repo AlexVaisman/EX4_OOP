@@ -1,6 +1,5 @@
 package GIS;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,12 +9,18 @@ import javax.imageio.ImageIO;
 
 import Geom.Point3D;
 
+/**
+ * This class represents a ghost.
+ * ghost has a gps point metadata and an image associated with it.
+ * @author A Beast
+ *
+ */
 public class Ghost {
 	private Point3D gps;
 	private Mdata_game metaData;
 	private BufferedImage myImage;
 	
-
+    
 	public Ghost(String[] line) throws ParseException {
 		double lat = 0, lon = 0, alt = 0;
 		lat = Double.parseDouble(line[2]);

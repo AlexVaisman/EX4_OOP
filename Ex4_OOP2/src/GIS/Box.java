@@ -5,6 +5,14 @@ import java.text.ParseException;
 
 import Geom.Point3D;
 
+/**
+ * This class represent a box in the game.
+ * a box 4 corners . it also has a vbox which is the same 4 corners but a 2~ meters off 
+ * the real point.
+ * and a wallbox which is the 4 walls of the box represented as segments.
+ * @author Alex vaisman, Shay naor
+ *
+ */
 public class Box {
 	private Point3D botLeft;
 	private Point3D botRight;
@@ -36,6 +44,11 @@ public class Box {
 		
 	}
 	
+	/**
+	 * This function checks if a point is in the box
+	 * @param gps , the point we check.
+	 * @return true if in the box.
+	 */
 	public boolean isIn(Point3D gps) {
 
 		if (botLeft.x() <= gps.x() && gps.x() <= topRight.x()) {

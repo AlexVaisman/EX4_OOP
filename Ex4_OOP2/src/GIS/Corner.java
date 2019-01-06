@@ -1,11 +1,17 @@
 package GIS;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import Algo.Segment;
 import Geom.Point3D;
 
+/**
+ * This function represents a corner.
+ * a corner has a gps point , and a list of what it sees,one for fruits
+ * and one for corners.
+ * it has a unique id as well.
+ * @author Alex vaisman, Shay naor
+ *
+ */
 public class Corner {
 
 	private Point3D gps;

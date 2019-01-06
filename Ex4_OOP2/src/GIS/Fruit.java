@@ -1,6 +1,5 @@
 package GIS;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -8,8 +7,6 @@ import java.text.ParseException;
 
 import javax.imageio.ImageIO;
 
-import Coords.MyCoords;
-import Geom.Geom_element;
 import Geom.Point3D;
 
 /**

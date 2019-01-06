@@ -12,6 +12,13 @@ import javax.imageio.ImageIO;
 import Coords.MyCoords;
 import Geom.Point3D;
 
+/**
+ * This class represents a player.
+ * player has a gps point ,radius,speed,orientation and an image associated with it.
+ * it also has a list of what the player sees.
+ * @author Alex vaisman, Shay naor.
+ *
+ */
 public class Player {
 	private int id;
 	private double radius;
@@ -44,7 +51,10 @@ public class Player {
 		
 		
 	}
-
+    /**
+     * This function finds the azimuth from the player to a gps point.
+     * @param gps
+     */
 	public void findOrientation(Point3D gps) {
 		MyCoords coords = new MyCoords();
 		double arr[] = new double[3];

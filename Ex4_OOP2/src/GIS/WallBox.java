@@ -3,7 +3,12 @@ package GIS;
 import java.util.ArrayList;
 
 import Algo.Segment;
-
+/**
+ * This class represents a wallbox.
+ * a wallbox has 4 segments and each represents a wall .
+ * @author Alex vaisman, Shay naor.
+ *
+ */
 public class WallBox {
 
 	private ArrayList<Segment> walls;

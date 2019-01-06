@@ -3,7 +3,11 @@ package GIS;
 import java.util.ArrayList;
 
 import Geom.Point3D;
-
+/**
+ * This class represents the 4 virtual points of a box.
+ * @author Alex vaisman, Shay naor.
+ *
+ */
 public class BoxHitBox {
 
 	private Point3D VtopRight;

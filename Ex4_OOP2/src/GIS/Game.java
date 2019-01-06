@@ -1,21 +1,20 @@
 
 package GIS;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import File_format.MyFileUtils;
 import Geom.Point3D;
 import Gui.Map;
 
 /**
- * This class represents a Game. A game is an object with two ArrayList
- * associated with it. one ArrayList for fruits, and one for pacmans. This class
- * will receive a path to a CSV file. it will read the file and add each element
- * fruit or pacman to the correct array.
- * 
+ * This class represents a Game. A game is an object with five ArrayList
+ * associated with it. one ArrayList for fruits, one for pacmans, one for ghosts,
+ * one for boxes , one for players, one for corners.
+ *  This class will receive a list of board data. it will read the list and add 
+ *  each element to the correct list.
+ *   
  * @author Shay Naor , Alex VAisman
  *
  */
@@ -28,14 +27,12 @@ public class Game {
 	private ArrayList<Corner> corners;
 	private Map map;
 
+    
 	/**
-	 * This function receives a path to a CSV file. it will read the file and then
-	 * read each line. if the object in the line is pacman it will add it to
-	 * ArrayList<Pacman>. if the object in the line is a fruit it will add it to
-	 * ArrayList<Fruit>. Will throw ParseException if a CSV line is not written in
-	 * the correct format.
-	 * 
-	 * @param path, the path to the CSV file.
+	 * This function receives a ArrayList<String> of data and adds
+	 * each object to the correct list.
+	 * @param board_data , the array list with the daya
+	 * @param bounds, the bounds of the map
 	 */
 	public Game(ArrayList<String> board_data, String bounds) {
 		this.fruits = new ArrayList<Fruit>();
@@ -133,6 +130,10 @@ public class Game {
 
 	}
 
+	/**
+	 * This function checks if a corner is not inside a box.
+	 * if its not in a box it will add it to the arraylist of corners.
+	 */
 	private void CheckIfCornerInBox() {
 		Iterator<Box> boxIt = this.boxes.iterator();
 		boolean flag = true;
@@ -160,7 +161,12 @@ public class Game {
 			}
 		}
 	}
-
+     
+	/**
+	 * This function updates the game with the new board data.
+	 * it will clear all relevant lists and add the new elements to them.
+	 * @param board_data
+	 */
 	public void updateTheGame(ArrayList<String> board_data) {
 		double ori = players.get(0).getOrientation();
 		this.fruits.clear();
@@ -255,7 +261,10 @@ public class Game {
 		}
 
 	}
-
+  
+	/**
+	 * This function clears the game.
+	 */
 	public void clearGame() {
 		this.fruits.clear();
 		this.pacmans.clear();
