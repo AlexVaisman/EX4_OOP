@@ -33,6 +33,7 @@ import GIS.Player;
 import Geom.Pixel;
 import Geom.Point3D;
 import Robot.Play;
+import mySQL.EndGameStatistics;
 
 /**
  * This class is the main class of the program. it will create the gui with all
@@ -179,21 +180,28 @@ public class MyFrame extends JFrame implements MouseListener {
 		Thread t2 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-
+                int mapId = 0;
+                int counter = 0;
 				while (play1.isRuning() && isGameLoaded) {
 					start.UpdateAlgo(game, play1);
-
+					if(counter==0) {
+                    mapId = play1.getHash1();
+                    counter++;
+					}
 					play1.rotate(game.getPlayers().get(0).getOrientation());
 					ArrayList<String> board_data = play1.getBoard();
 					game.updateTheGame(board_data);
 
 					repaint();
 					try {
-						Thread.sleep(100);
+						Thread.sleep(1);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+				}
+				if (!play1.isRuning()) {
+					EndGameStatistics test = new EndGameStatistics(play1.getStatistics(),mapId);
 				}
 			}
 		});
@@ -273,6 +281,7 @@ public class MyFrame extends JFrame implements MouseListener {
 						e.printStackTrace();
 					}
 				}
+
 			}
 		});
 		t1.start();

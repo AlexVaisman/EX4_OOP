@@ -13,6 +13,7 @@ public class ConnectToServer {
 		String jdbcUser="student";
 		String jdbcPassword="student";
 		
+		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection connection = 
@@ -27,12 +28,13 @@ public class ConnectToServer {
 			System.out.println("FirstID\t\tSecondID\tThirdID\t\tLogTime\t\t\t\tPoint\t\tSomeDouble");
 			while(resultSet.next())
 			{
-				System.out.println(resultSet.getInt("FirstID")+"\t\t" +
-						resultSet.getInt("SecondID")+"\t\t" +
-						resultSet.getInt("ThirdID")+"\t\t" +
-						resultSet.getTimestamp("LogTime") +"\t\t\t\t" +
+				System.out.println(//resultSet.getInt("FirstID")+"\t\t" +
+						//resultSet.getInt("SecondID")+"\t\t" +
+						//resultSet.getInt("ThirdID")+"\t\t" +
+						//resultSet.getTimestamp("LogTime") +"\t\t\t\t" +
 						resultSet.getDouble("Point") +"\t\t" +
-						resultSet.getDouble("SomeDouble"));
+						resultSet.getInt("SomeDouble"));
+				
 			}
 			
 			resultSet.close();		
