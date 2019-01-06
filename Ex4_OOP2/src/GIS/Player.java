@@ -36,7 +36,7 @@ public class Player {
 		
 		/* Player GUI image */
 		try {
-			this.myImage = ImageIO.read(new File("images\\player-40x40.png"));
+			this.myImage = ImageIO.read(new File("images\\player70x70.png"));
 		} catch (IOException e) {
 			System.err.println("ERROR: incorrect path for picture!");
 			e.printStackTrace();

@@ -44,7 +44,7 @@ import Robot.Play;
  */
 public class MyFrame extends JFrame implements MouseListener {
 	private static final long serialVersionUID = 1L;
-	private BufferedImage myImage, ghostImage ,fruitImage, playerImage;
+	private BufferedImage myImage, ghostImage ,fruitImage, playerImage,pacmanImage;
 	private Game game;
 	private boolean isGameLoaded;
 	private boolean isPlayer;
@@ -230,6 +230,11 @@ public class MyFrame extends JFrame implements MouseListener {
 					playerImage= this.game.getPlayers().get(0).getMyImage();
 				}
 				
+				/* Pacman GUI image */
+				if(this.game.getPacmans().size() > 0) {
+					pacmanImage= this.game.getPacmans().get(0).getMyImage();
+				}
+				
 				isGameLoaded = true;
 				repaint();
 			}
@@ -281,13 +286,13 @@ public class MyFrame extends JFrame implements MouseListener {
 
 			while (pacIt.hasNext()) {
 				Pacman pac = pacIt.next();
-				Pixel pixel = new Pixel(0, 0);
-				pixel = convert.convertGPStoPixel(pac.getGps());
-				int r = pac.getPicSize();
-				int x = pixel.getX() - (r / 2);
-				int y = pixel.getY() - (r / 2);
-				g1.setColor(pac.getColor());
-				g1.fillOval(x, y, r, r);
+				Pixel pixel = convert.convertGPStoPixel(pac.getGps());
+				//int r = pac.getPicSize();
+				//int x = pixel.getX() - (r / 2);
+				//int y = pixel.getY() - (r / 2);
+				//g1.setColor(pac.getColor());
+				//g1.fillOval(x, y, r, r);
+				g1.drawImage(this.pacmanImage, pixel.getX(), pixel.getY(), null);
 
 			}
 
@@ -300,7 +305,7 @@ public class MyFrame extends JFrame implements MouseListener {
 				//int x = pixel.getX() - (r / 2);
 				//int y = pixel.getY() - (r / 2);
 				//g1.setColor(fruit.getColor());
-				g1.drawImage(this.fruitImage, pixel.getX(), pixel.getY(), null);
+				g1.drawImage(this.fruitImage, pixel.getX(), pixel.getY()+10, null);
 			}
 
 			/* Draw ghosts */
@@ -329,7 +334,7 @@ public class MyFrame extends JFrame implements MouseListener {
 				Pixel pixelTopLeft = convert.convertGPStoPixel(box.getTopLeft());
 
 				g1.setColor(Color.BLACK);
-				g1.fillRect(pixelTopLeft.getX(), pixelTopLeft.getY(), width, height);
+				g1.fillRect(pixelTopLeft.getX(), pixelTopLeft.getY()+35, width, height);
 
 			}
 
@@ -345,22 +350,22 @@ public class MyFrame extends JFrame implements MouseListener {
 					//int y = pixel.getY() - (r / 2);
 					//g1.setColor(player.getColor());
 					//g1.fillOval(x, y, r, r);
-					g1.drawImage(this.playerImage, pixel.getX(), pixel.getY(), null);
+					g1.drawImage(this.playerImage, pixel.getX()-20, pixel.getY()-15, null);
 				}
 			}
 
-			/* Draw corners */
-			Iterator<Corner> cornerIt = this.game.getCorners().iterator();
-			while (cornerIt.hasNext()) {
-				Corner corner = cornerIt.next();
-				Pixel pixel = new Pixel(0, 0);
-				pixel = convert.convertGPStoPixel(corner.getGps());
-				int r = 10;
-				int x = pixel.getX() - (r / 2);
-				int y = pixel.getY() - (r / 2);
-				g1.setColor(Color.RED);
-				g1.fillOval(x, y, r, r);
-			}
+//			/* Draw corners */
+//			Iterator<Corner> cornerIt = this.game.getCorners().iterator();
+//			while (cornerIt.hasNext()) {
+//				Corner corner = cornerIt.next();
+//				Pixel pixel = new Pixel(0, 0);
+//				pixel = convert.convertGPStoPixel(corner.getGps());
+//				int r = 10;
+//				int x = pixel.getX() - (r / 2);
+//				int y = pixel.getY() - (r / 2);
+//				g1.setColor(Color.RED);
+//				g1.fillOval(x, y, r, r);
+//			}
 
 		}
 		g.drawImage(image, 0, 0, this);
@@ -369,8 +374,8 @@ public class MyFrame extends JFrame implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 
 		if (isPlayer && isGameLoaded) {
-			int x = e.getX();
-			int y = e.getY();
+			int x = e.getX()-20;
+			int y = e.getY()-30;
 			Pixel pixel = new Pixel(x, y);
 			Convert_pixel_gps convert = new Convert_pixel_gps(this.game.getMap());
 			Point3D gps = new Point3D(convert.convertPixeltoGPS(pixel));

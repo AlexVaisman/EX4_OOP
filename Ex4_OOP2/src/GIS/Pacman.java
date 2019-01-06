@@ -24,8 +24,7 @@ public class Pacman {
 
 	private Point3D gps;
 	private Mdata_game metaData;
-	private Color color;
-	private int picSize;
+	private BufferedImage myImage;
 	
 	/**
 	 * Pacman Constructor receives a line from a CSV file and creates a Pacman from the given data.
@@ -41,10 +40,13 @@ public class Pacman {
 
 		this.metaData = new Mdata_game(line);
 		
-		/* Pacman GUI representation settings */
-		this.color = Color.YELLOW;
-		this.picSize = 30;
-		
+		/* Pacman GUI image */
+		try {
+			this.myImage = ImageIO.read(new File("images\\pacman-40x40.png"));
+		} catch (IOException e) {
+			System.err.println("ERROR: incorrect path for picture!");
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -78,11 +80,7 @@ public class Pacman {
 		return metaData;
 	}
 
-	public Color getColor() {
-		return color;
-	}
-
-	public int getPicSize() {
-		return picSize;
+	public BufferedImage getMyImage() {
+		return myImage;
 	}
 }
