@@ -13,9 +13,16 @@ import GIS.Player;
 import Geom.Point3D;
 import Robot.Play;
 import graph.Graph;
-import graph.Graph_Algo;
-import graph.Node;
 
+/**
+ * This class is the algorithm of the program that decided what the player will
+ * do next. The algorithm will find the starting spot for a player depending on
+ * how much fruits are in a certain area. after that the player will always go
+ * to the closest fruit to him or a pacman if he gets into a certain range.
+ * 
+ * @author Alex vaisman , Shay naor
+ *
+ */
 public class AutoPlay {
 	private Game game;
 	private Play play1;
@@ -31,7 +38,6 @@ public class AutoPlay {
 		this.game = game;
 		this.play1 = play1;
 		this.G = new Graph();
-
 		this.LastId = new int[2];
 		this.counter = 0;
 		this.manover = false;
@@ -40,6 +46,12 @@ public class AutoPlay {
 		startAlgo();
 	}
 
+	/**
+	 * This function receives a game and player and updates the values.
+	 * 
+	 * @param game
+	 * @param play1
+	 */
 	public void UpdateAlgo(Game game, Play play1) {
 		this.game = game;
 		this.play1 = play1;
@@ -47,6 +59,14 @@ public class AutoPlay {
 		startAlgo();
 	}
 
+	/**
+	 * This function is the main function of the algorithm. if the game just started
+	 * it will call the function that finds the starting spot , and what each corner
+	 * sees . else it will just update what each corner sees. at the end of the
+	 * function it will call FindClosesFood, which will find what the pacman needs
+	 * to eat next and update him.
+	 * 
+	 */
 	private void startAlgo() {
 		String playerData = play1.getStatistics();
 		String line[] = {};
@@ -54,8 +74,8 @@ public class AutoPlay {
 		System.out.println(play1.getStatistics());
 
 		/*
-		 * If this is the first time the algo is called we need to find where to place
-		 * the player and what corners see.
+		 * If this is the first time the algorithm is called we need to find where to
+		 * place the player and what corners see.
 		 */
 		if (line[3].contains("Time left:0.0")) { // line[3].contains("Time left:100000.
 			Point3D start = findCluster();
@@ -69,6 +89,9 @@ public class AutoPlay {
 		FindClosestFood();
 	}
 
+	/**
+	 * This function finds for each corner what fruits in the game it sees.
+	 */
 	private void FindWhatFruitsCornerSees() {
 		Iterator<Corner> cornerIt = this.game.getCorners().iterator();
 
@@ -77,13 +100,11 @@ public class AutoPlay {
 			Iterator<Fruit> fruitIt = this.game.getFruits().iterator();
 			while (fruitIt.hasNext()) {
 				Fruit fruit = fruitIt.next();
-
 				Segment way = new Segment(corn.getGps(), fruit.getGps());
 				boolean iSee = CheckIfNotBlocked(way);
 				if (iSee == true) {
 					corn.getWhatFruitIsee().add(fruit);
 				}
-
 			}
 		}
 	}
@@ -121,9 +142,8 @@ public class AutoPlay {
 					Segment way = new Segment(corn.getGps(), corn2.getGps());
 					boolean iSee = CheckIfNotBlocked(way);
 					if (iSee == true) {
-						corn.getWhatISee().add(corn2); // <-----------------------------------?
+						corn.getWhatISee().add(corn2); 
 					}
-
 				}
 			}
 		}
@@ -132,9 +152,8 @@ public class AutoPlay {
 
 	/**
 	 * This function finds the closest pacman or fruit to the player, regardless to
-	 * if its visible or not. it will find the distance of not visible fruits or
-	 * pacmans as a path.
-	 * 
+	 * if its visible or not. the depending on who is closest to the player.
+	 * it will find the orientation to that object and update the player orientation.
 	 */
 	private void FindClosestFood() {
 
@@ -155,7 +174,9 @@ public class AutoPlay {
 			if (distanceAir < minVisibleFruit && notBlocked) {
 				minVisibleFruit = distanceAir;
 				fruitmin = fruit;
-			} else if (distanceAir < minVisibleFruit && !notBlocked) {
+			} 
+			/* Find the nearest fruit thats not visible */
+			else if (distanceAir < minVisibleFruit && !notBlocked) {
 
 				BuildGraph g = new BuildGraph(this.G, this.game.getPlayers().get(0), this.game.getCorners(), fruit);
 				this.path = new Path(g.getAns());
@@ -168,10 +189,10 @@ public class AutoPlay {
 
 			}
 		}
+		/* finds the nearest pacman that is visible */
 		double minVisibalePacman = 1000000;
 		Iterator<Pacman> pacIt = game.getPacmans().iterator();
 		Pacman pacMin = new Pacman(0, 0, 0);
-		/* finds the nearest pacman that is visible */
 		while (pacIt.hasNext()) {
 			Pacman pac = pacIt.next();
 			Segment way = new Segment(this.game.getPlayers().get(0).getGps(), pac.getGps());
@@ -182,10 +203,10 @@ public class AutoPlay {
 				pacMin = pac;
 			}
 		}
-
+        /* finds which of the 3 objects are closest to the player */
 		int target = FindMinDistance(minVisibleFruit, minNotVisibleFruit, minVisibalePacman);
 		// visible fruit
-		if (target == 1 ) {
+		if (target == 1) {
 			this.game.getPlayers().get(0).findOrientation(fruitmin.getGps());
 		}
 		// not visible
@@ -198,29 +219,25 @@ public class AutoPlay {
 				this.counter++;
 			}
 
-			// System.out.println("first: "+this.LastId[0]+"second: "+ this.LastId[1]+"
-			// Third: "+this.LastId[2]+" Fourth: "+this.LastId[3]+" fifth:
-			// "+this.LastId[4]);
-			// 17second: 22 Third: 17 Fourth: 22 fifth: 17
-			if (this.LastId[0] == 16&& this.LastId[1] == 17 ||this.LastId[1] == 16&& this.LastId[0] == 17 ) {
+			if (this.LastId[0] == 16 && this.LastId[1] == 17 || this.LastId[1] == 16 && this.LastId[0] == 17) {
 
 				this.manover = true;
 				if (count < 25) {
-					if(count<3) {
+					if (count < 1) {
 						this.game.getPlayers().get(0).setOrientation(270.0);
 						play1.rotate(game.getPlayers().get(0).getOrientation());
 					}
-					if (count >=3&& count<15) {
+					if (count >= 3 && count < 10) {
 						this.game.getPlayers().get(0).setOrientation(0.0);
 						play1.rotate(game.getPlayers().get(0).getOrientation());
-					} 
-					if(count >=15) {
-						this.game.getPlayers().get(0).setOrientation(90.0);
+					}
+					if (count >= 10) {
+						this.game.getPlayers().get(0).setOrientation(85.0);
 						play1.rotate(game.getPlayers().get(0).getOrientation());
 					}
 					count++;
 					try {
-						Thread.sleep(90);
+						Thread.sleep(65);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -263,6 +280,12 @@ public class AutoPlay {
 		return 17;
 	}
 
+	/**
+	 * This function checks for a segment if its blocked by any box segment
+	 * in the game.
+	 * @param way , the segment we want to check if its blocked.
+	 * @return , returns true if not blocked.
+	 */
 	private boolean CheckIfNotBlocked(Segment way) {
 		Iterator<Box> boxIt = this.game.getBoxes().iterator();
 		while (boxIt.hasNext()) {

@@ -1,8 +1,13 @@
 package GIS;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import Coords.MyCoords;
 import Geom.Point3D;
@@ -13,9 +18,8 @@ public class Player {
 	private double speed;
 	private Point3D gps;
 	private double orientation;
-	private Color color;
-	private int picSize;
 	private ArrayList<Corner> whatISee;
+	private BufferedImage myImage;
 
 	public Player(String[] line) throws ParseException {
 		id = Integer.parseInt(line[1]);
@@ -30,9 +34,15 @@ public class Player {
 		this.orientation = 0;
 		this.whatISee = new ArrayList<Corner>();
 		
-		/* Player GUI representation settings */
-		this.color = Color.PINK;
-		this.picSize = 50;
+		/* Player GUI image */
+		try {
+			this.myImage = ImageIO.read(new File("images\\pacman-new.png"));
+		} catch (IOException e) {
+			System.err.println("ERROR: incorrect path for picture!");
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	public void findOrientation(Point3D gps) {
@@ -50,14 +60,7 @@ public class Player {
 	public double getOrientation() {
 		return orientation;
 	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public int getPicSize() {
-		return picSize;
-	}
+	
 
 	public int getId() {
 		return id;
@@ -77,6 +80,10 @@ public class Player {
 
 	public ArrayList<Corner> getWhatISee() {
 		return whatISee;
+	}
+
+	public BufferedImage getMyImage() {
+		return myImage;
 	}
 
 }

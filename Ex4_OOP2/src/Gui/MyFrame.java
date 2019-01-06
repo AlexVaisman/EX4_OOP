@@ -44,7 +44,7 @@ import Robot.Play;
  */
 public class MyFrame extends JFrame implements MouseListener {
 	private static final long serialVersionUID = 1L;
-	private BufferedImage myImage, ghostImage ,fruitImage;
+	private BufferedImage myImage, ghostImage ,fruitImage, playerImage;
 	private Game game;
 	private boolean isGameLoaded;
 	private boolean isPlayer;
@@ -62,20 +62,6 @@ public class MyFrame extends JFrame implements MouseListener {
 		this.setTitle("Pacman");
 		isGameLoaded = false;
 		this.addMouseListener(this);
-		
-		try {
-			this.ghostImage = ImageIO.read(new File("images\\Inky.gif"));
-		} catch (IOException e) {
-			System.err.println("ERROR: incorrect path for picture!");
-			e.printStackTrace();
-		}
-		
-		try {
-			this.fruitImage = ImageIO.read(new File("images\\cherry.png"));
-		} catch (IOException e) {
-			System.err.println("ERROR: incorrect path for picture!");
-			e.printStackTrace();
-		}
 		
 
 		initGUI();
@@ -228,7 +214,22 @@ public class MyFrame extends JFrame implements MouseListener {
 				String map_data = play1.getBoundingBox();
 				ArrayList<String> board_data = play1.getBoard();
 				this.game = new Game(board_data, map_data);
-
+				
+				/* Ghost GUI image */
+				if(this.game.getGhosts().size() > 0) {
+					ghostImage = this.game.getGhosts().get(0).getMyImage();
+				}
+				
+				/* Fruit GUI image */
+				if(this.game.getFruits().size() > 0) {
+					fruitImage= this.game.getFruits().get(0).getMyImage();
+				}
+				
+				/* Player GUI image */
+				if(this.game.getPlayers().size() > 0) {
+					playerImage= this.game.getPlayers().get(0).getMyImage();
+				}
+				
 				isGameLoaded = true;
 				repaint();
 			}
@@ -338,13 +339,13 @@ public class MyFrame extends JFrame implements MouseListener {
 			while (playerIt.hasNext()) {
 				Player player = playerIt.next();
 				if (convert.isIn(player.getGps())) {
-					Pixel pixel = new Pixel(0, 0);
-					pixel = convert.convertGPStoPixel(player.getGps());
-					int r = player.getPicSize();
-					int x = pixel.getX() - (r / 2);
-					int y = pixel.getY() - (r / 2);
-					g1.setColor(player.getColor());
-					g1.fillOval(x, y, r, r);
+					Pixel pixel = convert.convertGPStoPixel(player.getGps());
+					//int r = player.getPicSize();
+					//int x = pixel.getX() - (r / 2);
+					//int y = pixel.getY() - (r / 2);
+					//g1.setColor(player.getColor());
+					//g1.fillOval(x, y, r, r);
+					g1.drawImage(this.playerImage, pixel.getX(), pixel.getY(), null);
 				}
 			}
 

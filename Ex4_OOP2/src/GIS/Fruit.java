@@ -1,7 +1,12 @@
 package GIS;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
+
+import javax.imageio.ImageIO;
 
 import Coords.MyCoords;
 import Geom.Geom_element;
@@ -20,9 +25,8 @@ public class Fruit {
 
 	private Point3D gps;
 	private Mdata_game metaData;
-	private Color color;
-	private int picSize;
 	private int fruitsNearMe;
+	private BufferedImage myImage;
 
 	/**
 	 * Fruit Constructor receives a line from a CSV file and creates a fruit from
@@ -41,9 +45,14 @@ public class Fruit {
 		this.metaData = new Mdata_game(line);
 		this.fruitsNearMe = 0;
 		
-		/* Fruit GUI representation settings */
-		this.color = Color.GREEN;
-		this.picSize = 15;
+		/* Fruit GUI image */
+		try {
+			this.myImage = ImageIO.read(new File("images\\cherry.png"));
+		} catch (IOException e) {
+			System.err.println("ERROR: incorrect path for picture!");
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -73,18 +82,15 @@ public class Fruit {
 		return this.metaData;
 	}
 
-	public Color getColor() {
-		return color;
-	}
-
-	public int getPicSize() {
-		return picSize;
-	}
 	public int getFruitsNearMe() {
 		return fruitsNearMe;
 	}
 
 	public void setFruitsNearMe() {
 		this.fruitsNearMe ++;
+	}
+
+	public BufferedImage getMyImage() {
+		return myImage;
 	}
 }

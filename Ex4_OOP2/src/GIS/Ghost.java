@@ -13,8 +13,6 @@ import Geom.Point3D;
 public class Ghost {
 	private Point3D gps;
 	private Mdata_game metaData;
-	private Color color;
-	private int picSize;
 	private BufferedImage myImage;
 	
 
@@ -27,6 +25,7 @@ public class Ghost {
 
 		this.metaData = new Mdata_game(line);
 		
+		/* Ghost GUI image */
 		try {
 			this.myImage = ImageIO.read(new File("images\\Inky.gif"));
 		} catch (IOException e) {
@@ -34,9 +33,6 @@ public class Ghost {
 			e.printStackTrace();
 		}
 		
-		/* Ghost GUI representation settings */
-		this.color = Color.RED;
-		this.picSize = 35;
 	}
 	
 	public String toString() {
@@ -50,14 +46,6 @@ public class Ghost {
 
 	public Mdata_game getMetaData() {
 		return metaData;
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public int getPicSize() {
-		return picSize;
 	}
 
 	public BufferedImage getMyImage() {
