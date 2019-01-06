@@ -374,8 +374,8 @@ public class MyFrame extends JFrame implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 
 		if (isPlayer && isGameLoaded) {
-			int x = e.getX()-20;
-			int y = e.getY()-30;
+			int x = e.getX()-15;
+			int y = e.getY()-35;
 			Pixel pixel = new Pixel(x, y);
 			Convert_pixel_gps convert = new Convert_pixel_gps(this.game.getMap());
 			Point3D gps = new Point3D(convert.convertPixeltoGPS(pixel));
