@@ -347,12 +347,10 @@ public class MyFrame extends JFrame implements MouseListener {
 					g1.drawImage(this.playerImage, pixel.getX() - 20, pixel.getY() - 15, null);
 				}
 			}
-
-		}
-		g.drawImage(image, 0, 0, this);
-		if (isGameLoaded) {
 			System.out.println(play1.getStatistics());
 		}
+		g.drawImage(image, 0, 0, this);
+
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -371,7 +369,7 @@ public class MyFrame extends JFrame implements MouseListener {
 
 		}
 
-		if (!game.getPlayers().isEmpty()) {
+		if (isGameLoaded && !game.getPlayers().isEmpty()) {
 			int x = e.getX();
 			int y = e.getY();
 			Pixel pixDirection = new Pixel(x, y);
