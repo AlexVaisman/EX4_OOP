@@ -11,6 +11,16 @@ import graph.Graph;
 import graph.Graph_Algo;
 import graph.Node;
 
+
+/**
+ * This function will find the shortest path from one point to another, when the line
+ * of sight between the two points is blocked.
+ * this function uses the dijkstra algorithm. wiki : https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm.
+
+ * @author Alex vaisman, shay naor.
+ * 
+ *
+ */
 public class BuildGraph {
 	private Player player;
 	private ArrayList<Corner> corners;
@@ -18,18 +28,21 @@ public class BuildGraph {
 	private Graph G;
 	private Node ans;
 
+	
 	public BuildGraph(Graph G, Player player, ArrayList<Corner> corners, Fruit fruit) {
 		G.clear_meta_data();
 		this.corners = corners;
 		this.player = player;
 		this.fruit = fruit;
 		this.G = G;
-	
-
 		InitGraph();
-
 	}
 
+	/**
+	 * This function adds all the nodes to the graph.
+	 * when one node is for the player , one node is for the target (fruit or pacman).
+	 * and the rest of the nodes are the corners of the boxes which are not within a box.
+	 */
 	private void InitGraph() {
 		String source = "player";
 		String target = "fruit";
@@ -55,6 +68,11 @@ public class BuildGraph {
 
 	}
 
+	
+	/**
+	 * This function adds for each node what nodes are connected to it
+	 * and how far away are they. 
+	 */
 	private void AddEdges() {
 		MyCoords convert = new MyCoords();
 		
@@ -68,6 +86,8 @@ public class BuildGraph {
 			G.addEdge("player", "" + corn.getMyId(), convert.distance3d(player.getGps(), corn.getGps()));
 		}
 
+		
+		/* add for each corner what it sees and if it sees the target add it as well */
 		Iterator<Corner> cornerIt = this.corners.iterator();
 		while (cornerIt.hasNext()) {
 			Corner corn = cornerIt.next();
