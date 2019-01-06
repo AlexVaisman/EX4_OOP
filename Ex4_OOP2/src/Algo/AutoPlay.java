@@ -219,6 +219,12 @@ public class AutoPlay {
 						play1.rotate(game.getPlayers().get(0).getOrientation());
 					}
 					count++;
+					try {
+						Thread.sleep(90);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					if (count >= 25) {
 						this.manover = false;
 					}
