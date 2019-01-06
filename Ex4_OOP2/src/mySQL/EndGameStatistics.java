@@ -29,10 +29,9 @@ public class EndGameStatistics {
 	}
 
 	private void ConnectToServer() {
-		String jdbcUrl = "jdbc:mysql://ariel-oop.xyz:3306/oop"; // ?useUnicode=yes&characterEncoding=UTF-8&useSSL=false";
+		String jdbcUrl = "jdbc:mysql://ariel-oop.xyz:3306/oop"; 
 		String jdbcUser = "student";
 		String jdbcPassword = "student";
-		System.out.println(this.mapId + "-----------DUUUDEEE");
 		ArrayList<Double> scores = new ArrayList<Double>();
 		int currentmap = 0;
 		try {
@@ -82,8 +81,6 @@ public class EndGameStatistics {
 		}
 		
 		this.myPosition = counter;
-
-		System.out.println(scores.toString());
 
 	}
 	/* Getters */

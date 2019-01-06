@@ -180,13 +180,13 @@ public class MyFrame extends JFrame implements MouseListener {
 		Thread t2 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-                int mapId = 0;
-                int counter = 0;
+				int mapId = 0;
+				int counter = 0;
 				while (play1.isRuning() && isGameLoaded) {
 					start.UpdateAlgo(game, play1);
-					if(counter==0) {
-                    mapId = play1.getHash1();
-                    counter++;
+					if (counter == 0) {
+						mapId = play1.getHash1();
+						counter++;
 					}
 					play1.rotate(game.getPlayers().get(0).getOrientation());
 					ArrayList<String> board_data = play1.getBoard();
@@ -194,19 +194,40 @@ public class MyFrame extends JFrame implements MouseListener {
 
 					repaint();
 					try {
-						Thread.sleep(1);
+						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 				if (!play1.isRuning()) {
-					EndGameStatistics test = new EndGameStatistics(play1.getStatistics(),mapId);
+					EndGameStatistics test = new EndGameStatistics(play1.getStatistics(), mapId);
+					printEndGameStatistics(test);
 				}
 			}
+
 		});
 		t2.start();
 
+	}
+
+	private void printEndGameStatistics(EndGameStatistics test) {
+		
+		System.out.println("\n\n\n\n\n");
+		
+		System.out.println("******************************************Game-Over******************************************");
+		System.out.println();
+		System.out.println("\t\t\t\tYour score is: " + test.getMyScore());
+		System.out.println("\t\t\t\tYour position is: " + test.getMyPosition());
+		System.out.println("\t\t\t\tThe best score on this map is: " + test.getFirstPlace());
+		System.out.println("\t\t\t\tThe second best score is: " + test.getSecondPlace());
+		System.out.println("\t\t\t\tThe third best score is: " + test.getThirdPlace());
+		
+		System.out.println("\n");
+		
+		System.out.println("\t\t\t\tYour map id: " + test.getMapId());
+		
+		
 	}
 
 	/**
@@ -275,7 +296,7 @@ public class MyFrame extends JFrame implements MouseListener {
 
 					repaint();
 					try {
-						Thread.sleep(150);
+						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
