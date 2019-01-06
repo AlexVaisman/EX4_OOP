@@ -32,7 +32,7 @@ public class EndGameStatistics {
 		String jdbcUrl = "jdbc:mysql://ariel-oop.xyz:3306/oop"; // ?useUnicode=yes&characterEncoding=UTF-8&useSSL=false";
 		String jdbcUser = "student";
 		String jdbcPassword = "student";
-		System.out.println(this.mapId+"-----------DUUUDEEE");
+		System.out.println(this.mapId + "-----------DUUUDEEE");
 		ArrayList<Double> scores = new ArrayList<Double>();
 		int currentmap = 0;
 		try {
@@ -66,18 +66,49 @@ public class EndGameStatistics {
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 		Collections.sort(scores);
 		Collections.reverse(scores);
-		
+
 		this.firstPlace = scores.get(0);
 		this.secondPlace = scores.get(1);
 		this.thirdPlace = scores.get(2);
-		this.myPosition = scores.indexOf(this.myScore);
-		System.out.println(myPosition);
 		
+		int counter = 1;
+		for(int i = 0 ; i < scores.size() ; i++) {
+			if(scores.get(i) > myScore) {
+				counter++;
+			}
+		}
+		
+		this.myPosition = counter;
+
 		System.out.println(scores.toString());
 
+	}
+	/* Getters */
+	public int getMapId() {
+		return mapId;
+	}
+
+	public double getMyScore() {
+		return myScore;
+	}
+
+	public int getMyPosition() {
+		return myPosition;
+	}
+
+	public double getFirstPlace() {
+		return firstPlace;
+	}
+
+	public double getSecondPlace() {
+		return secondPlace;
+	}
+
+	public double getThirdPlace() {
+		return thirdPlace;
 	}
 
 }
