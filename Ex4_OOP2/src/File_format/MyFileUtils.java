@@ -1,31 +1,20 @@
 package File_format;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import GIS.GIS_element;
-import GIS.GIS_layer;
 
 /**
- * This class does multiple actions on files. such as: read csv file and write
- * kml file.
- * 
+ * This class reads a csv file and turns it into a String list.
  * @author Shay Naor and Alex Vaisman.
  *
  */
 public class MyFileUtils {
 
 	/**
-	 * This function recived a start line and path to a csv file and create a
+	 * This function receives a start line and path to a csv file and create a
 	 * ArrayList String[] that contains the csv file data.
 	 * 
 	 * @param path      location of csv file.
@@ -53,8 +42,8 @@ public class MyFileUtils {
 	}
 
 	/**
-	 * This function recives folder path and return a ArrayList String that contains
-	 * all the paths for csv files in folder. The algorithem taken from :
+	 * This function receives folder path and return a ArrayList String that contains
+	 * all the paths for csv files in folder. The algorithm taken from :
 	 * https://stackoverflow.com/questions/1844688/how-to-read-all-files-in-a-folder-from-java.
 	 * 
 	 * @param folder that contains the csv files.
