@@ -4,6 +4,7 @@ package GIS;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Vector;
 
 import Geom.Point3D;
 import Gui.Map;
@@ -19,7 +20,7 @@ import Gui.Map;
  *
  */
 public class Game {
-	private ArrayList<Fruit> fruits;// contains all the Fruits.
+	private Vector<Fruit> fruits;// contains all the Fruits.
 	private ArrayList<Pacman> pacmans;// contains all the Pacmans.
 	private ArrayList<Ghost> ghosts;
 	private ArrayList<Box> boxes;
@@ -35,7 +36,7 @@ public class Game {
 	 * @param bounds, the bounds of the map
 	 */
 	public Game(ArrayList<String> board_data, String bounds) {
-		this.fruits = new ArrayList<Fruit>();
+		this.fruits = new Vector<Fruit>();
 		this.pacmans = new ArrayList<Pacman>();
 		this.ghosts = new ArrayList<Ghost>();
 		this.boxes = new ArrayList<Box>();
@@ -276,7 +277,7 @@ public class Game {
 
 	/* Getters */
 
-	public void setFruits(ArrayList<Fruit> fruits) {
+	public void Vector(Vector<Fruit> fruits) {
 		this.fruits = fruits;
 	}
 
@@ -284,7 +285,7 @@ public class Game {
 		this.pacmans = pacmans;
 	}
 
-	public ArrayList<Fruit> getFruits() {
+	public Vector<Fruit> getFruits() {
 		return fruits;
 	}
 

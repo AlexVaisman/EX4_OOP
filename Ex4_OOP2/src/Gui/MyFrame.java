@@ -305,10 +305,14 @@ public class MyFrame extends JFrame implements MouseListener {
 
 			/* Draw fruits */
 			Iterator<Fruit> fruitIt = this.game.getFruits().iterator();
-			while (fruitIt.hasNext()) {
-				Fruit fruit = fruitIt.next();
-				Pixel pixel = convert.convertGPStoPixel(fruit.getGps());
-				g1.drawImage(this.fruitImage, pixel.getX(), pixel.getY() + 10, null);
+			synchronized (getFrames()) {
+				while (fruitIt.hasNext()) {
+					synchronized (getFrames()) {
+						Fruit fruit = fruitIt.next();
+						Pixel pixel = convert.convertGPStoPixel(fruit.getGps());
+						g1.drawImage(this.fruitImage, pixel.getX(), pixel.getY() + 10, null);
+					}
+				}
 			}
 
 			/* Draw ghosts */
