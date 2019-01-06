@@ -123,8 +123,12 @@ public class MyFrame extends JFrame implements MouseListener {
 		clearFile.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				game.clearGame();
-				repaint();
+				if (isGameLoaded) {
+					game.clearGame();
+					repaint();
+					isGameLoaded = false;
+
+				}
 			}
 		});
 
@@ -140,7 +144,9 @@ public class MyFrame extends JFrame implements MouseListener {
 		playerInput.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				isPlayer = true;
+				if (isGameLoaded) {
+					isPlayer = true;
+				}
 			}
 		});
 
@@ -148,7 +154,9 @@ public class MyFrame extends JFrame implements MouseListener {
 		startPlay.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				ChooseButtonStartPlay();
+				if (isGameLoaded) {
+					ChooseButtonStartPlay();
+				}
 			}
 		});
 
@@ -156,7 +164,9 @@ public class MyFrame extends JFrame implements MouseListener {
 		startSim.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				ChooseButtonStartSim();
+				if (isGameLoaded) {
+					ChooseButtonStartSim();
+				}
 			}
 		});
 
@@ -170,7 +180,7 @@ public class MyFrame extends JFrame implements MouseListener {
 			@Override
 			public void run() {
 
-				while (play1.isRuning()) {
+				while (play1.isRuning() && isGameLoaded) {
 					start.UpdateAlgo(game, play1);
 
 					play1.rotate(game.getPlayers().get(0).getOrientation());
@@ -243,13 +253,14 @@ public class MyFrame extends JFrame implements MouseListener {
 	}
 
 	private void ChooseButtonStartPlay() {
+
 		play1.start();
 		repaint();
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
 
-				while (play1.isRuning()) {
+				while (play1.isRuning() && isGameLoaded) {
 					play1.rotate(game.getPlayers().get(0).getOrientation());
 					ArrayList<String> board_data = play1.getBoard();
 					game.updateTheGame(board_data);
