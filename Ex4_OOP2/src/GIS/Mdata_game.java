@@ -1,9 +1,6 @@
 package GIS;
 
 import java.text.ParseException;
-import java.util.Date;
-
-import Geom.Point3D;
 
 /**
  * This class represents the Meta data of pacman and fruit . for pacman it will
