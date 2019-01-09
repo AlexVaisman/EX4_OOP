@@ -11,3 +11,7 @@ The second option is automatic , an algorithm will control the player.
 
 # How to use
 
+In the src folder there is a Gui package, in that package there is a main class, run it.
+it will open the game.
+for more information on how to run the game and how to play it visit the wiki page:
+https://github.com/AlexVaisman/EX4_OOP/wiki/How-to-use
