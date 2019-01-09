@@ -27,6 +27,7 @@ public class Map {
 
 	/**
 	 * This function loads an image and inputs the topleft and bot right gps values.
+	 * @param bounds , the bounds of the map
 	 */
 	public Map(String bounds) {
 		/* INIT myImge filed */
@@ -39,26 +40,26 @@ public class Map {
 
 		String[] userInfo = {};
 		userInfo = bounds.split(",");
-		
-		
+
+
 		double lat = Double.parseDouble(userInfo[2]);
 		double lon = Double.parseDouble(userInfo[3]);
-		
+
 		Point3D botLeft = new Point3D(lat, lon, 0);
-		
+
 		lat = Double.parseDouble(userInfo[5]);
 		lon = Double.parseDouble(userInfo[6]);
-		
+
 		Point3D topRight = new Point3D(lat, lon, 0);
-		
-		
+
+
 
 		this.width = myImage.getWidth();
 		this.height = myImage.getHeight();
 		this.topLeft = new Point3D(topRight.x(), botLeft.y());
 		this.botRight = new Point3D(botLeft.x(), topRight.y());
-		
-		
+
+
 	}
 
 	/* Getters */
