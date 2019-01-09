@@ -22,4 +22,4 @@ link: https://github.com/AlexVaisman/EX4_OOP/wiki/The-algorithm
 
 # How the program works.
 A detailed explanation on the to program works can be found in the wiki:
-link: https://github.com/AlexVaisman/EX4_OOP/wiki/How-the-program-works/_edit
+link: https://github.com/AlexVaisman/EX4_OOP/wiki/How-the-program-works
