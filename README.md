@@ -15,3 +15,7 @@ In the src folder there is a Gui package, in that package there is a main class,
 it will open the game.
 for more information on how to run the game and how to play it visit the wiki page:
 https://github.com/AlexVaisman/EX4_OOP/wiki/How-to-use
+
+# The algorithm used
+A detailed explanation on how the algorithm works can be found in the wiki.
+link: https://github.com/AlexVaisman/EX4_OOP/wiki/The-algorithm
