@@ -16,6 +16,6 @@ it will open the game.
 for more information on how to run the game and how to play it visit the wiki page:
 https://github.com/AlexVaisman/EX4_OOP/wiki/How-to-use
 
-# The algorithm used , and how the program works.
+# The algorithm used.
 A detailed explanation on how the automatic part of the game works can be found in the wiki.
-link: https://github.com/AlexVaisman/EX4_OOP/wiki/The-algorithm-,-and-how-the-program-works.
+link: https://github.com/AlexVaisman/EX4_OOP/wiki/The-algorithm
