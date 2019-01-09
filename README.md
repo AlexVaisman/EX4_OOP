@@ -18,4 +18,4 @@ https://github.com/AlexVaisman/EX4_OOP/wiki/How-to-use
 
 # The algorithm used , and how the program works.
 A detailed explanation on how the automatic part of the game works can be found in the wiki.
-link: https://github.com/AlexVaisman/EX4_OOP/wiki/The-algorithm
+link: https://github.com/AlexVaisman/EX4_OOP/wiki/The-algorithm-,-and-how-the-program-works.
