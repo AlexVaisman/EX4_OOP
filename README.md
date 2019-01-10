@@ -26,4 +26,5 @@ link: https://github.com/AlexVaisman/EX4_OOP/wiki/How-the-program-works
 
 # Algorithm results compared to ours.
 The results can be found in the wiki 
-link: 
+
+link: https://github.com/AlexVaisman/EX4_OOP/wiki/Algorithm-results-vs-our-result
