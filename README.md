@@ -24,7 +24,7 @@ link: https://github.com/AlexVaisman/EX4_OOP/wiki/The-algorithm
 A detailed explanation on the to program works can be found in the wiki:
 link: https://github.com/AlexVaisman/EX4_OOP/wiki/How-the-program-works
 
-# Algorithm results compared to ours.
+# Algorithm results compared to other players.
 The results can be found in the wiki 
 
-link: https://github.com/AlexVaisman/EX4_OOP/wiki/Algorithm-results-vs-our-result
+link: https://github.com/AlexVaisman/EX4_OOP/wiki/Algorithm-results-vs-Other-players
